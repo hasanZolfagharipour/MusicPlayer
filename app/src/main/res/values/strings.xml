@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">MusicPlayers</string>
+    <string name="message_to_get_permission">For starting app we need to permissions to access your audio files.</string>
 </resources>
