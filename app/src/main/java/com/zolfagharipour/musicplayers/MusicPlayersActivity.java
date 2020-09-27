@@ -11,6 +11,8 @@ import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.zolfagharipour.musicplayers.fragment.MusicTabFragment;
+
 import java.util.List;
 
 public class MusicPlayersActivity extends AppCompatActivity implements EasyPermissions.PermissionCallbacks, EasyPermissions.RationaleCallbacks {
@@ -27,6 +29,10 @@ public class MusicPlayersActivity extends AppCompatActivity implements EasyPermi
         setContentView(R.layout.activity_music_players);
 
         checkPermissions();
+
+        if (getSupportFragmentManager().findFragmentById(R.id.fragmentContainer) == null)
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, MusicTabFragment.newInstance()).commit();
+
 
     }
 
