@@ -16,7 +16,7 @@
         android:theme="@style/AppTheme"
         tools:replace="android:icon"
         tools:targetApi="q">
-        <activity android:name=".MusicPlayersActivity">
+        <activity android:name=".controller.activity.MusicPlayersActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

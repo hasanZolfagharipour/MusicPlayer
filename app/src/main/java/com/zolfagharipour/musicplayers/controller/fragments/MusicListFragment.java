@@ -1,12 +1,6 @@
-package com.zolfagharipour.musicplayers.fragment;
+package com.zolfagharipour.musicplayers.controller.fragments;
 
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,12 +9,21 @@ import com.zolfagharipour.musicplayers.R;
 import com.zolfagharipour.musicplayers.adapter.MusicListRecyclerViewAdapter;
 import com.zolfagharipour.musicplayers.model.Song;
 import com.zolfagharipour.musicplayers.repository.MusicRepository;
-import com.zolfagharipour.musicplayers.utils.MusicManager;
 
 import java.util.List;
 
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 public class MusicListFragment extends Fragment implements MusicListRecyclerViewAdapter.MusicItemListener {
 
+
+    private RecyclerView mRecyclerView;
+    private MusicListRecyclerViewAdapter mAdapter;
+    private MusicRepository mRepository;
+    private List<Song> mSongList;
 
     public static MusicListFragment newInstance() {
 
@@ -31,12 +34,6 @@ public class MusicListFragment extends Fragment implements MusicListRecyclerView
         return fragment;
     }
 
-    private RecyclerView mRecyclerView;
-    private MusicListRecyclerViewAdapter mAdapter;
-    private MusicRepository mRepository;
-    private List<Song> mSongList;
-
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,17 +43,19 @@ public class MusicListFragment extends Fragment implements MusicListRecyclerView
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view =  inflater.inflate(R.layout.fragment_music_list, container, false);
+        View view = inflater.inflate(R.layout.fragment_music_list, container, false);
 
         findViews(view);
+        setRecyclerView();
         setUI();
-
-
         return view;
     }
 
-    private void findViews(View view){
+    private void findViews(View view) {
         mRecyclerView = view.findViewById(R.id.recyclerview);
+    }
+
+    private void setRecyclerView() {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
         mRecyclerView.setHasFixedSize(true);
@@ -65,25 +64,18 @@ public class MusicListFragment extends Fragment implements MusicListRecyclerView
     private void setUI() {
 
         if (mAdapter == null) {
-            mAdapter = new MusicListRecyclerViewAdapter(MusicManager.getSongList(getActivity().getApplicationContext()), getActivity(), this);
+            mAdapter = new MusicListRecyclerViewAdapter(mSongList, getActivity(), this);
             mRecyclerView.setAdapter(mAdapter);
         } else {
-            mAdapter.setSongList(MusicManager.getSongList(getActivity().getApplicationContext()));
+            mAdapter.setSongList(mSongList);
             mAdapter.notifyDataSetChanged();
         }
-
     }
 
+    @Override
+    public void onMusicItemClicked(Song song) {
+        mRepository.setCurrentSong(song);
+        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, MusicPlayFragment.newInstance(song)).addToBackStack(null).commit();
+    }
 
-        @Override
-        public void MusicClicked (Song song){
-
-        /*mRepository.setCurrentSong(song);
-        ActivityOptionsCompat activityOptionsCompat = ActivityOptionsCompat.
-                makeSceneTransitionAnimation(getActivity(),
-                        )
-        startActivity(SongPlayActivity.newIntent(getActivity(),song),activityOptionsCompat.toBundle());*/
-
-        }
-        
 }

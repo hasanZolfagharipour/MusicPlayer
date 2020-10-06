@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:title="@string/volume"
+        android:id="@+id/songPlayMenuVolume"
+        android:icon="@drawable/ic_volume_up"
+        app:showAsAction="always"/>
+
+    <item
+        android:title="@string/share"
+        android:id="@+id/songPlayMenuShare"/>
+    <item
+        android:title="@string/delete"
+        android:id="@+id/songPlayMenuDelete"/>
+    <item
+        android:title="@string/track_details"
+        android:id="@+id/songPlayMenuTrackDetail"/>
+    <item
+        android:title="@string/set_as"
+        android:id="@+id/songPlayMenuSetAs"/>
+
+</menu>

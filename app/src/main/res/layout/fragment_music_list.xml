@@ -4,8 +4,4 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/recyclerview"
-    tools:context=".fragment.MusicListFragment">
-
-
-
-</androidx.recyclerview.widget.RecyclerView>
+    tools:context=".controller.fragments.MusicListFragment"/>

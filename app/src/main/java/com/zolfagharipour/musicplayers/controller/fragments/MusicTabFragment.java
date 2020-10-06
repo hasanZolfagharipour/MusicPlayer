@@ -1,42 +1,39 @@
-package com.zolfagharipour.musicplayers.fragment;
+package com.zolfagharipour.musicplayers.controller.fragments;
 
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.Fragment;
-import androidx.viewpager2.widget.ViewPager2;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
-import com.zolfagharipour.musicplayers.MusicPlayersActivity;
 import com.zolfagharipour.musicplayers.R;
-import com.zolfagharipour.musicplayers.adapter.MusicTabViewPager;
+import com.zolfagharipour.musicplayers.adapter.MusicTabViewPagerAdapter;
 import com.zolfagharipour.musicplayers.repository.MusicRepository;
 import com.zolfagharipour.musicplayers.utils.MusicManager;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
+import androidx.viewpager2.widget.ViewPager2;
 
 
 public class MusicTabFragment extends Fragment {
 
+    private MusicRepository mRepository;
+    private Toolbar mToolbar;
+    private ViewPager2 mViewPager;
+    private MusicTabViewPagerAdapter mPagerAdapter;
+    private TabLayout mTabLayout;
+
     public static MusicTabFragment newInstance() {
-        
+
         Bundle args = new Bundle();
-        
+
         MusicTabFragment fragment = new MusicTabFragment();
         fragment.setArguments(args);
         return fragment;
     }
-
-    private MusicRepository mRepository;
-    private Toolbar mToolbar;
-    private ViewPager2 mViewPager;
-    private MusicTabViewPager mPagerAdapter;
-    private TabLayout mTabLayout;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -47,37 +44,33 @@ public class MusicTabFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-       return inflater.inflate(R.layout.fragment_music_tab, container, false);
+        View view = inflater.inflate(R.layout.fragment_music_tab, container, false);
 
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
         findViews(view);
         setToolbar();
         setViewPager();
         setTabLayout();
 
+        return view;
     }
 
-    private void findViews(View view){
-        mToolbar        = view.findViewById(R.id.listMenuToolbar);
-        mViewPager      = view.findViewById(R.id.viewPagerTabs);
-        mTabLayout      = view.findViewById(R.id.tabLayout);
+
+    private void findViews(View view) {
+        mToolbar = view.findViewById(R.id.listMenuToolbar);
+        mViewPager = view.findViewById(R.id.viewPagerTabs);
+        mTabLayout = view.findViewById(R.id.tabLayout);
     }
 
-    private void setToolbar(){
+    private void setToolbar() {
         setHasOptionsMenu(true);
-        ((MusicPlayersActivity)getActivity()).setSupportActionBar(mToolbar);
     }
 
-    private void setTabLayout(){
+    private void setTabLayout() {
 
         new TabLayoutMediator(mTabLayout, mViewPager, new TabLayoutMediator.TabConfigurationStrategy() {
             @Override
             public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
-                switch (position){
+                switch (position) {
                     default:
                         tab.setText(getString(R.string.tracks));
                         break;
@@ -91,8 +84,8 @@ public class MusicTabFragment extends Fragment {
         }).attach();
     }
 
-    private void setViewPager(){
-        mPagerAdapter = new MusicTabViewPager(getActivity());
+    private void setViewPager() {
+        mPagerAdapter = new MusicTabViewPagerAdapter(getActivity());
         mViewPager.setAdapter(mPagerAdapter);
     }
 

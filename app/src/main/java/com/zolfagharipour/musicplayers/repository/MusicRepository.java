@@ -37,7 +37,7 @@ public class MusicRepository {
     }
 
     public void setMediaPlayer(Context context, Uri uri) {
-        mMediaPlayer = MediaPlayer.create(context, uri);
+        mMediaPlayer = MediaPlayer.create(context.getApplicationContext(), uri);
     }
 
     public Song getCurrentSong() {

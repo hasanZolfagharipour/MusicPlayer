@@ -3,15 +3,11 @@
     android:height="32dp"
     android:viewportWidth="32"
     android:viewportHeight="32">
+
   <path
-      android:pathData="M16,16m-15,0a15,15 0,1 1,30 0a15,15 0,1 1,-30 0"
-      android:fillColor="#eef5fd"/>
-  <path
-      android:pathData="M16,16m-15,0a15,15 0,1 1,30 0a15,15 0,1 1,-30 0"
-      android:fillColor="#eef5fd"/>
-  <path
-      android:pathData="M31,16A15,15 0,0 0,16 1V31A15,15 0,0 0,31 16Z"
+      android:pathData="M6,1L26,1A5,5 0,0 1,31 6L31,26A5,5 0,0 1,26 31L6,31A5,5 0,0 1,1 26L1,6A5,5 0,0 1,6 1z"
       android:fillColor="#d7e2f2"/>
+
   <path
       android:pathData="M22.08,11.8l-5,-3.61A1,1 0,0 0,15.5 9v7.56a3.91,3.91 0,0 0,-2 -0.56,4 4,0 1,0 4,4s0,-0.06 0,-0.09a0.43,0.43 0,0 1,0 -0.05V11l3.42,2.47a1,1 0,1 0,1.16 -1.62Z"
       android:fillColor="#ff9797"/>
@@ -19,3 +15,4 @@
       android:pathData="M17.08,8.19a1,1 0,0 0,-1 -0.08l0,0v15A4,4 0,0 0,17.5 20s0,-0.06 0,-0.09a0.43,0.43 0,0 1,0 -0.05V11l3.42,2.47a1,1 0,1 0,1.16 -1.62Z"
       android:fillColor="#e47979"/>
 </vector>
+

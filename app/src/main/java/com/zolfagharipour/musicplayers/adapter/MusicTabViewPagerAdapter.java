@@ -1,14 +1,17 @@
 package com.zolfagharipour.musicplayers.adapter;
 
-import com.zolfagharipour.musicplayers.fragment.MusicListFragment;
+;
+
+import com.zolfagharipour.musicplayers.controller.fragments.MusicListFragment;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
-public class MusicTabViewPager extends FragmentStateAdapter {
-    public MusicTabViewPager(@NonNull FragmentActivity fragmentActivity) {
+public class MusicTabViewPagerAdapter extends FragmentStateAdapter {
+
+    public MusicTabViewPagerAdapter(@NonNull FragmentActivity fragmentActivity) {
         super(fragmentActivity);
     }
 

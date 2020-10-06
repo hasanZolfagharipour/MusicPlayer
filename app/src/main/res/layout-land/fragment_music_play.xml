@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/songPlayContainer">
+
+    <androidx.appcompat.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:id="@+id/songPlayToolbar"
+        app:menu="@menu/music_play_menu">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_down"
+            android:rotation="90"
+            android:id="@+id/songPlayDownScreen"/>
+
+
+    </androidx.appcompat.widget.Toolbar>
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:layout_marginStart="@dimen/default_landscape_margin"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:id="@+id/viewPagerSongPlay"/>
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/songPlayTitle"
+        app:layout_constraintBottom_toTopOf="@id/songPlayAlbum"
+        app:layout_constraintStart_toEndOf="@id/viewPagerSongPlay"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:gravity="center"
+        android:textSize="@dimen/title_text_size"
+        android:layout_marginBottom="@dimen/default_margin"
+        android:textColor="@color/colorWhite"/>
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/songPlayAlbum"
+        app:layout_constraintBottom_toTopOf="@id/songPlayFavorite"
+        app:layout_constraintStart_toEndOf="@id/viewPagerSongPlay"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:gravity="center"
+        android:textSize="@dimen/subtitle_text_size"
+        android:textColor="@color/colorTabTextDarkGray"
+        android:layout_margin="@dimen/default_landscape_margin"/>
+
+    <ImageView
+        android:src="@drawable/ic_favorite_border"
+        android:id="@+id/songPlayFavorite"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        app:layout_constraintStart_toStartOf="@id/songPlaySeekBar"
+        android:layout_margin="@dimen/default_landscape_margin"
+        app:layout_constraintBottom_toTopOf="@id/songPlaySeekBar"/>
+
+    <ImageView
+        android:src="@drawable/ic_add"
+        android:id="@+id/songPlayAddToPlayList"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_margin="@dimen/default_landscape_margin"
+        app:layout_constraintEnd_toEndOf="@id/songPlaySeekBar"
+        app:layout_constraintBottom_toTopOf="@id/songPlaySeekBar"/>
+
+
+    <SeekBar
+        android:id="@+id/songPlaySeekBar"
+        android:layout_width="0dp"
+        android:layout_height="16dp"
+        app:layout_constraintStart_toEndOf="@id/viewPagerSongPlay"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="@dimen/default_margin"
+        android:layout_marginEnd="@dimen/default_margin"
+        android:progressTint="@color/colorWhite"
+        android:thumbTint="@color/colorWhite"
+        android:backgroundTint="@color/colorTabTextDarkGray"
+        app:layout_constraintBottom_toTopOf="@id/songPlayElapsedTime"/>
+
+    <TextView
+        android:id="@+id/songPlayElapsedTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorWhite"
+        app:layout_constraintStart_toStartOf="@id/songPlaySeekBar"
+        app:layout_constraintBottom_toTopOf="@id/songPlayShuffle"
+        android:layout_marginStart="@dimen/default_landscape_margin"/>
+
+    <TextView
+        android:id="@+id/songPlayTotalTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorWhite"
+        app:layout_constraintTop_toTopOf="@id/songPlayElapsedTime"
+        app:layout_constraintBottom_toBottomOf="@id/songPlayElapsedTime"
+        app:layout_constraintEnd_toEndOf="@id/songPlaySeekBar"
+        android:layout_marginEnd="@dimen/default_landscape_margin"/>
+
+
+    <ImageView
+        android:src="@drawable/ic_shuffle"
+        android:id="@+id/songPlayShuffle"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="@dimen/default_landscape_margin"
+        app:layout_constraintStart_toEndOf="@id/viewPagerSongPlay"
+        app:layout_constraintBottom_toBottomOf="@id/viewPagerSongPlay"/>
+
+
+    <ImageView
+        android:src="@drawable/ic_backward"
+        android:id="@+id/songPlayBackward"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        app:layout_constraintStart_toEndOf="@id/songPlayShuffle"
+        app:layout_constraintEnd_toStartOf="@id/songPlayPause"
+        app:layout_constraintBottom_toBottomOf="@id/viewPagerSongPlay"/>
+
+
+    <ImageView
+        android:src="@drawable/ic_play"
+        android:id="@+id/songPlayPause"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        app:layout_constraintStart_toEndOf="@id/songPlayBackward"
+        app:layout_constraintEnd_toStartOf="@id/songPlayForward"
+        app:layout_constraintBottom_toBottomOf="@id/viewPagerSongPlay"
+        android:layout_marginStart="@dimen/default_margin"/>
+
+
+    <ImageView
+        android:src="@drawable/ic_forward"
+        android:id="@+id/songPlayForward"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        app:layout_constraintStart_toEndOf="@id/songPlayPause"
+        app:layout_constraintEnd_toStartOf="@id/songPlayRepeat"
+        app:layout_constraintBottom_toBottomOf="@id/viewPagerSongPlay"
+        android:layout_marginStart="@dimen/default_margin"/>
+
+
+    <ImageView
+        android:src="@drawable/ic_repeat"
+        android:id="@+id/songPlayRepeat"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginEnd="@dimen/default_landscape_margin"
+        app:layout_constraintBottom_toBottomOf="@id/viewPagerSongPlay"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

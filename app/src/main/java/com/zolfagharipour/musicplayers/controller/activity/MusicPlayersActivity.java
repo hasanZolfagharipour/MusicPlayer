@@ -1,4 +1,13 @@
-package com.zolfagharipour.musicplayers;
+package com.zolfagharipour.musicplayers.controller.activity;
+
+import android.Manifest;
+import android.content.Intent;
+import android.os.Bundle;
+
+import com.zolfagharipour.musicplayers.R;
+import com.zolfagharipour.musicplayers.controller.fragments.MusicTabFragment;
+
+import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -7,21 +16,13 @@ import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.AppSettingsDialog;
 import pub.devrel.easypermissions.EasyPermissions;
 
-import android.Manifest;
-import android.content.Intent;
-import android.os.Bundle;
-
-import com.zolfagharipour.musicplayers.fragment.MusicTabFragment;
-
-import java.util.List;
-
 public class MusicPlayersActivity extends AppCompatActivity implements EasyPermissions.PermissionCallbacks, EasyPermissions.RationaleCallbacks {
-
 
 
     public static final int REQUEST_CODE_PERMISSION_EXTERNAL_STORAGE = 10;
     public static final String TAG = "tag";
     private static final String[] mPermissions = {Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE};
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,12 +30,8 @@ public class MusicPlayersActivity extends AppCompatActivity implements EasyPermi
         setContentView(R.layout.activity_music_players);
 
         checkPermissions();
-
-        if (getSupportFragmentManager().findFragmentById(R.id.fragmentContainer) == null)
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, MusicTabFragment.newInstance()).commit();
-
-
     }
+
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -46,6 +43,8 @@ public class MusicPlayersActivity extends AppCompatActivity implements EasyPermi
     private void checkPermissions() {
         if (!EasyPermissions.hasPermissions(this, mPermissions))
             EasyPermissions.requestPermissions(this, getString(R.string.message_to_get_permission), REQUEST_CODE_PERMISSION_EXTERNAL_STORAGE, mPermissions);
+        else if (getSupportFragmentManager().findFragmentById(R.id.fragmentContainer) == null)
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, MusicTabFragment.newInstance(), MusicTabFragment.class.getSimpleName()).commit();
     }
 
     @Override
@@ -79,6 +78,10 @@ public class MusicPlayersActivity extends AppCompatActivity implements EasyPermi
         if (requestCode == AppSettingsDialog.DEFAULT_SETTINGS_REQ_CODE) {
             if (!EasyPermissions.hasPermissions(this, mPermissions))
                 finish();
+            else {
+                if (getSupportFragmentManager().findFragmentById(R.id.fragmentContainer) == null)
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, MusicTabFragment.newInstance()).commit();
+            }
         }
     }
 }

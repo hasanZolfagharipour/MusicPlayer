@@ -3,23 +3,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:title="@string/volume"
-        android:id="@+id/songPlayMenuVolume"
-        android:icon="@drawable/ic_volume_up"
-        app:showAsAction="always"/>
+        android:id="@+id/tabMenuSearch"
+        android:icon="@drawable/ic_search"
+        android:title="@string/search"
+        app:actionViewClass="androidx.appcompat.widget.SearchView"
+        app:showAsAction="always|collapseActionView" />
 
     <item
-        android:title="@string/share"
-        android:id="@+id/songPlayMenuShare"/>
-    <item
-        android:title="@string/delete"
-        android:id="@+id/songPlayMenuDelete"/>
-    <item
-        android:title="@string/track_details"
-        android:id="@+id/songPlayMenuTrackDetail"/>
-    <item
-        android:title="@string/set_as"
-        android:id="@+id/songPlayMenuSetAs"/>
+        android:id="@+id/tabMenuExitApp"
+        android:title="@string/exit"
+        app:showAsAction="never" />
 
 
 </menu>
