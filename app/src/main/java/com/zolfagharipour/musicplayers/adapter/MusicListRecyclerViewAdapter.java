@@ -1,6 +1,8 @@
 package com.zolfagharipour.musicplayers.adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,11 +10,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.airbnb.lottie.LottieAnimationView;
+import com.airbnb.lottie.LottieDrawable;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.zolfagharipour.musicplayers.R;
 import com.zolfagharipour.musicplayers.model.Song;
+import com.zolfagharipour.musicplayers.repository.MusicRepository;
 import com.zolfagharipour.musicplayers.utils.MusicManager;
 
 import java.util.List;
@@ -22,13 +26,16 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class MusicListRecyclerViewAdapter extends RecyclerView.Adapter<MusicListRecyclerViewAdapter.MusicViewHolder> {
 
+    public static final String TAG = "tag";
     private List<Song> mSongList;
     private Context mContext;
+    private MusicRepository mRepository;
     private MusicItemListener mMusicItemListener;
 
     public MusicListRecyclerViewAdapter(List<Song> songList, Context context, MusicItemListener musicItemListener) {
         mSongList = songList;
         mContext = context;
+        mRepository = MusicRepository.getInstance();
         mMusicItemListener = musicItemListener;
     }
 
@@ -47,19 +54,29 @@ public class MusicListRecyclerViewAdapter extends RecyclerView.Adapter<MusicList
         Song song = mSongList.get(position);
         holder.mTextViewTitle.setText(song.getTitle());
         holder.mTextViewSubtitle.setText(song.getAlbum());
-        bindSongsCover(holder, song);
+        bindMusicCover(holder, song);
     }
 
-    private void bindSongsCover(final MusicViewHolder holder, final Song song) {
+    private void bindMusicCover(final MusicViewHolder holder, final Song song) {
         final byte[] image = MusicManager.getCoverArt(song.getPath());
         Glide.with(mContext).asBitmap().load(image).placeholder(R.drawable.ic_cover_list).apply(RequestOptions.bitmapTransform(new RoundedCorners(14))).into(holder.mImageViewCover);
     }
+
+
+ /*   private void bindLottieAnimation(final MusicViewHolder holder, final Song song){
+        if (mRepository.getMediaPlayer() != null && mRepository.getMediaPlayer().isPlaying()){
+            if (mRepository.getCurrentSong().getPath().equals(song.getPath())){
+                holder.mLottieAnimationView.setVisibility(View.VISIBLE);
+                holder.mLottieAnimationView.playAnimation();
+                holder.mLottieAnimationView.setRepeatCount(50);
+            }
+        }
+    }*/
 
     @Override
     public int getItemCount() {
         return mSongList.size();
     }
-
 
     public interface MusicItemListener {
         void onMusicItemClicked(Song song);

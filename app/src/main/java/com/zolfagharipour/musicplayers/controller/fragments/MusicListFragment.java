@@ -1,6 +1,8 @@
 package com.zolfagharipour.musicplayers.controller.fragments;
 
 import android.os.Bundle;
+import android.transition.Explode;
+import android.transition.Fade;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -61,7 +63,7 @@ public class MusicListFragment extends Fragment implements MusicListRecyclerView
         mRecyclerView.setHasFixedSize(true);
     }
 
-    private void setUI() {
+    public void setUI() {
 
         if (mAdapter == null) {
             mAdapter = new MusicListRecyclerViewAdapter(mSongList, getActivity(), this);
@@ -75,7 +77,10 @@ public class MusicListFragment extends Fragment implements MusicListRecyclerView
     @Override
     public void onMusicItemClicked(Song song) {
         mRepository.setCurrentSong(song);
-        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, MusicPlayFragment.newInstance(song)).addToBackStack(null).commit();
-    }
+        MusicPlayFragment fragment = MusicPlayFragment.newInstance(song);
 
+        fragment.setEnterTransition(new Explode());
+
+        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, fragment).addToBackStack(null).commit();
+    }
 }

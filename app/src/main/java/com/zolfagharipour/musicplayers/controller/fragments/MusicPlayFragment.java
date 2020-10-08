@@ -12,6 +12,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.transition.Fade;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,12 +23,14 @@ import android.widget.TextView;
 
 import com.zolfagharipour.musicplayers.R;
 import com.zolfagharipour.musicplayers.adapter.MusicPlayViewPagerAdapter;
+import com.zolfagharipour.musicplayers.enums.MusicRepeatMode;
 import com.zolfagharipour.musicplayers.model.Song;
 import com.zolfagharipour.musicplayers.repository.MusicRepository;
 import com.zolfagharipour.musicplayers.utils.MusicManager;
 import com.zolfagharipour.musicplayers.utils.TimeFormatPlayer;
 
 import java.util.List;
+import java.util.Random;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -38,7 +41,7 @@ import androidx.palette.graphics.Palette;
 import androidx.vectordrawable.graphics.drawable.AnimatedVectorDrawableCompat;
 import androidx.viewpager2.widget.ViewPager2;
 
-public class MusicPlayFragment extends Fragment {
+public class MusicPlayFragment extends Fragment implements MediaPlayer.OnCompletionListener {
 
     public static final String ARG_SONG_INSTANCE = "ArgSongInstance";
     public static final String TAG = "tag";
@@ -71,6 +74,7 @@ public class MusicPlayFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initialization();
+        setReturnTransition(new Fade());
     }
 
     @Override
@@ -92,13 +96,14 @@ public class MusicPlayFragment extends Fragment {
 
         setListener();
 
+
         return view;
     }
 
     private void initialization() {
         mRepository = MusicRepository.getInstance();
         mSongList = mRepository.getSongList();
-        mSong = (Song) getArguments().getSerializable(ARG_SONG_INSTANCE);
+        mSong = mRepository.getCurrentSong();
         mUri = Uri.parse(mSong.getPath());
     }
 
@@ -182,16 +187,6 @@ public class MusicPlayFragment extends Fragment {
             }
         });
 
-        mMediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-            @Override
-            public void onCompletion(MediaPlayer mp) {
-                mHandler.removeCallbacks(mRunnable);
-                mp.seekTo(0);
-                setInitializationUI();
-                setSeekBar();
-            }
-        });
-
         mViewPager2.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
@@ -220,11 +215,11 @@ public class MusicPlayFragment extends Fragment {
                 if (mMediaPlayer != null && !mMediaPlayer.isPlaying()){
                     mMediaPlayer.start();
                     mHandler.removeCallbacks(mRunnable);
-                    setAnimationPlayPauseDrawable(R.drawable.avd_play_to_pause);
+                    setAnimationPlayPauseDrawable(mImageViewPlayPause, R.drawable.avd_play_to_pause);
                 }else if (mMediaPlayer != null && mMediaPlayer.isPlaying()){
                     mMediaPlayer.pause();
                     setSeekBar();
-                    setAnimationPlayPauseDrawable(R.drawable.avd_pause_to_play);
+                    setAnimationPlayPauseDrawable(mImageViewPlayPause, R.drawable.avd_pause_to_play);
                 }
             }
         });
@@ -250,11 +245,86 @@ public class MusicPlayFragment extends Fragment {
                 setSeekBar();
             }
         });
+
+        mImageViewRepeat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mRepository.getMusicRepeatMode() == MusicRepeatMode.REPEAT_ALL){
+                    mRepository.setMusicRepeatMode(MusicRepeatMode.REPEAT_OFF);
+                    mImageViewRepeat.setAlpha(0.5f);
+                }else if (mRepository.getMusicRepeatMode() == MusicRepeatMode.REPEAT_OFF){
+                    mImageViewRepeat.setAlpha(1f);
+                    mRepository.setMusicRepeatMode(MusicRepeatMode.REPEAT_ONE);
+                    setAnimationPlayPauseDrawable(mImageViewRepeat, R.drawable.avd_repeat_to_one);
+                }else if (mRepository.getMusicRepeatMode() == MusicRepeatMode.REPEAT_ONE){
+                    mRepository.setMusicRepeatMode(MusicRepeatMode.REPEAT_ALL);
+                    setAnimationPlayPauseDrawable(mImageViewRepeat, R.drawable.avd_one_to_repeat);
+                }
+            }
+        });
+
+        mImageViewShuffle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mRepository.isShuffleOn()){
+                    mImageViewShuffle.setAlpha(0.5f);
+                    mRepository.setShuffleOn(false);
+                }else
+                {
+                    mImageViewShuffle.setAlpha(1f);
+                    mRepository.setShuffleOn(true);
+                }
+            }
+        });
     }
 
-    private void setAnimationPlayPauseDrawable(int p) {
-        mImageViewPlayPause.setImageDrawable(getResources().getDrawable(p));
-        Drawable drawable = mImageViewPlayPause.getDrawable();
+    private int getRandomNumberForShuffle(){
+        int number =  new Random().nextInt(mSongList.size());
+        if (number == mViewPager2.getCurrentItem())
+            getRandomNumberForShuffle();
+        return number;
+    }
+
+    private void prepareNextMusic(){
+        int currentPage = mViewPager2.getCurrentItem();
+
+        if (!mRepository.isShuffleOn() && mRepository.getMusicRepeatMode() == MusicRepeatMode.REPEAT_ALL) {
+            if (currentPage < mSongList.size() - 1)
+                mViewPager2.setCurrentItem(++currentPage);
+            else if (currentPage == mSongList.size() - 1) {
+                currentPage = 0;
+                mViewPager2.setCurrentItem(currentPage);
+            }
+        }else if (mRepository.isShuffleOn() && mRepository.getMusicRepeatMode() == MusicRepeatMode.REPEAT_ALL){
+            currentPage = getRandomNumberForShuffle();
+            mViewPager2.setCurrentItem(currentPage);
+        }
+        else if (mRepository.getMusicRepeatMode() == MusicRepeatMode.REPEAT_ONE){
+            mViewPager2.setCurrentItem(currentPage);
+        }
+        else if (mRepository.getMusicRepeatMode() == MusicRepeatMode.REPEAT_OFF){
+            mHandler.removeCallbacks(mRunnable);
+           mMediaPlayer.seekTo(0);
+            setInitializationUI();
+            setSeekBar();
+            return;
+        }
+
+        mSong = mSongList.get(currentPage);
+        mUri = Uri.parse(mSong.getPath());
+        mRepository.setCurrentSong(mSong);
+
+
+        setMediaPlayer();
+        mMediaPlayer.start();
+        updateUI();
+        setInitializationUI();
+        setSeekBar();
+    }
+
+    private void setAnimationPlayPauseDrawable(ImageView imageView,int p) {
+        imageView.setImageDrawable(getResources().getDrawable(p));
+        Drawable drawable = imageView.getDrawable();
 
         if (drawable instanceof AnimatedVectorDrawableCompat) {
             mAnimatedVectorDrawableCompat = (AnimatedVectorDrawableCompat) drawable;
@@ -268,6 +338,20 @@ public class MusicPlayFragment extends Fragment {
     private void setInitializationUI(){
 
         mTextViewElapsedTime.setText(TimeFormatPlayer.elapsedTime(mMediaPlayer.getCurrentPosition()));
+        mImageViewShuffle.setAlpha(mRepository.isShuffleOn() ? 1f : 0.5f);
+
+        if (mRepository.getMusicRepeatMode() == MusicRepeatMode.REPEAT_ALL)
+            mImageViewRepeat.setImageResource(R.drawable.ic_repeat);
+        else if (mRepository.getMusicRepeatMode() == MusicRepeatMode.REPEAT_ONE)
+            mImageViewRepeat.setImageResource(R.drawable.ic_repeat_one);
+        else if (mRepository.getMusicRepeatMode() == MusicRepeatMode.REPEAT_OFF){
+            mImageViewRepeat.setImageResource(R.drawable.ic_repeat);
+            mImageViewRepeat.setAlpha(0.5f);
+        }
+
+
+
+        mMediaPlayer.setOnCompletionListener(this);
 
         if (mMediaPlayer != null && !mMediaPlayer.isPlaying()){
             mImageViewPlayPause.setImageResource(R.drawable.ic_play);
@@ -346,5 +430,11 @@ public class MusicPlayFragment extends Fragment {
         } else
             setDefaultPalette();
 
+    }
+
+    @Override
+    public void onCompletion(MediaPlayer mp) {
+        prepareNextMusic();
+        mMediaPlayer.setOnCompletionListener(this);
     }
 }

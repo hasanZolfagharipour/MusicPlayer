@@ -4,6 +4,7 @@ import android.content.Context;
 import android.media.MediaPlayer;
 import android.net.Uri;
 
+import com.zolfagharipour.musicplayers.enums.MusicRepeatMode;
 import com.zolfagharipour.musicplayers.model.Song;
 
 import java.util.List;
@@ -13,6 +14,16 @@ public class MusicRepository {
     private static MusicRepository sRepository;
     private List<Song> mSongList;
     private Song mCurrentSong;
+    private MusicRepeatMode mMusicRepeatMode = MusicRepeatMode.REPEAT_ALL;
+    private boolean mIsShuffleOn;
+
+    public MusicRepeatMode getMusicRepeatMode() {
+        return mMusicRepeatMode;
+    }
+
+    public void setMusicRepeatMode(MusicRepeatMode musicRepeatMode) {
+        mMusicRepeatMode = musicRepeatMode;
+    }
 
     private MediaPlayer mMediaPlayer;
     private MusicRepository() {
@@ -46,5 +57,13 @@ public class MusicRepository {
 
     public void setCurrentSong(Song currentSong) {
         mCurrentSong = currentSong;
+    }
+
+    public boolean isShuffleOn() {
+        return mIsShuffleOn;
+    }
+
+    public void setShuffleOn(boolean shuffleOn) {
+        mIsShuffleOn = shuffleOn;
     }
 }

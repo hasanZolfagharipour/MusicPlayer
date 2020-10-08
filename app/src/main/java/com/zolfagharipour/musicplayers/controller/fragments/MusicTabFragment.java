@@ -1,6 +1,7 @@
 package com.zolfagharipour.musicplayers.controller.fragments;
 
 import android.os.Bundle;
+import android.transition.Fade;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,6 +41,7 @@ public class MusicTabFragment extends Fragment {
         super.onCreate(savedInstanceState);
         mRepository = MusicRepository.getInstance();
         mRepository.setSongList(MusicManager.getSongList(getActivity().getApplicationContext()));
+
     }
 
     @Override
