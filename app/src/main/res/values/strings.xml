@@ -19,6 +19,7 @@
     <string name="transition_album">transitionRowAlbum</string>
     <string name="transition_title">transitionRowTitle</string>
     <string name="transition_image">transitionImage</string>
+    <string name="refresh">Refresh</string>
 
 
 </resources>

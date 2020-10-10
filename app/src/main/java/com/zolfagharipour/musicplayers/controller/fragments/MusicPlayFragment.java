@@ -12,6 +12,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.transition.Explode;
 import android.transition.Fade;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -75,6 +76,7 @@ public class MusicPlayFragment extends Fragment implements MediaPlayer.OnComplet
         super.onCreate(savedInstanceState);
         initialization();
         setReturnTransition(new Fade());
+        setEnterTransition(new Explode());
     }
 
     @Override

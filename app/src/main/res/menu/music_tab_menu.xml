@@ -10,6 +10,11 @@
         app:showAsAction="always|collapseActionView" />
 
     <item
+        android:id="@+id/tabMenuRefresh"
+        android:title="@string/refresh"
+        app:showAsAction="never"/>
+
+    <item
         android:id="@+id/tabMenuExitApp"
         android:title="@string/exit"
         app:showAsAction="never" />

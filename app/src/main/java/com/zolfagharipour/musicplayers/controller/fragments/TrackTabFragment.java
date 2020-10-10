@@ -2,7 +2,6 @@ package com.zolfagharipour.musicplayers.controller.fragments;
 
 import android.os.Bundle;
 import android.transition.Explode;
-import android.transition.Fade;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +18,7 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class MusicListFragment extends Fragment implements MusicListRecyclerViewAdapter.MusicItemListener {
+public class TrackTabFragment extends Fragment implements MusicListRecyclerViewAdapter.MusicItemListener, TabFragment.OnUpdateMusicListListener {
 
 
     private RecyclerView mRecyclerView;
@@ -27,11 +26,11 @@ public class MusicListFragment extends Fragment implements MusicListRecyclerView
     private MusicRepository mRepository;
     private List<Song> mSongList;
 
-    public static MusicListFragment newInstance() {
+    public static TrackTabFragment newInstance() {
 
         Bundle args = new Bundle();
 
-        MusicListFragment fragment = new MusicListFragment();
+        TrackTabFragment fragment = new TrackTabFragment();
         fragment.setArguments(args);
         return fragment;
     }
@@ -41,11 +40,12 @@ public class MusicListFragment extends Fragment implements MusicListRecyclerView
         super.onCreate(savedInstanceState);
         mRepository = MusicRepository.getInstance();
         mSongList = mRepository.getSongList();
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_music_list, container, false);
+        View view = inflater.inflate(R.layout.fragment_track_tab, container, false);
 
         findViews(view);
         setRecyclerView();
@@ -77,10 +77,11 @@ public class MusicListFragment extends Fragment implements MusicListRecyclerView
     @Override
     public void onMusicItemClicked(Song song) {
         mRepository.setCurrentSong(song);
-        MusicPlayFragment fragment = MusicPlayFragment.newInstance(song);
+        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, MusicPlayFragment.newInstance(song)).addToBackStack(null).commit();
+    }
 
-        fragment.setEnterTransition(new Explode());
-
-        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, fragment).addToBackStack(null).commit();
+    @Override
+    public void onUpdateRecyclerView(){
+        setUI();
     }
 }

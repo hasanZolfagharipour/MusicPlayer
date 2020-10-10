@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.zolfagharipour.musicplayers.R;
-import com.zolfagharipour.musicplayers.controller.fragments.MusicTabFragment;
+import com.zolfagharipour.musicplayers.controller.fragments.TabFragment;
 
 import java.util.List;
 
@@ -44,7 +44,7 @@ public class MusicPlayersActivity extends AppCompatActivity implements EasyPermi
         if (!EasyPermissions.hasPermissions(this, mPermissions))
             EasyPermissions.requestPermissions(this, getString(R.string.message_to_get_permission), REQUEST_CODE_PERMISSION_EXTERNAL_STORAGE, mPermissions);
         else if (getSupportFragmentManager().findFragmentById(R.id.fragmentContainer) == null)
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, MusicTabFragment.newInstance(), MusicTabFragment.class.getSimpleName()).commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, TabFragment.newInstance(), TabFragment.class.getSimpleName()).commit();
     }
 
     @Override
@@ -80,7 +80,7 @@ public class MusicPlayersActivity extends AppCompatActivity implements EasyPermi
                 finish();
             else {
                 if (getSupportFragmentManager().findFragmentById(R.id.fragmentContainer) == null)
-                    getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, MusicTabFragment.newInstance()).commit();
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, TabFragment.newInstance()).commit();
             }
         }
     }
