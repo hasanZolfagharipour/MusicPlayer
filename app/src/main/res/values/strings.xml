@@ -7,7 +7,7 @@
     <string name="more">More</string>
     <string name="tracks">Tracks</string>
     <string name="albums">Albums</string>
-    <string name="singers">Singers</string>
+    <string name="playlist">PlayLists</string>
     <string name="music_player">Music Player</string>
     <string name="share">Share</string>
     <string name="delete">Delete</string>
@@ -20,6 +20,7 @@
     <string name="transition_title">transitionRowTitle</string>
     <string name="transition_image">transitionImage</string>
     <string name="refresh">Refresh</string>
+    <string name="no_tracks">No tracks!</string>
 
 
 </resources>

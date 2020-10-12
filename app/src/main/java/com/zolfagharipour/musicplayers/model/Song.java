@@ -5,6 +5,7 @@ import java.io.Serializable;
 public class Song implements Serializable {
 
     private String mPath, mTitle, mAlbum, mArtist, mDuration;
+    private boolean favorite;
 
 
     public Song() {
@@ -16,6 +17,7 @@ public class Song implements Serializable {
         mAlbum = album;
         mArtist = artist;
         mDuration = duration;
+
     }
 
     public String getPath() {
@@ -58,4 +60,11 @@ public class Song implements Serializable {
         mDuration = duration;
     }
 
+    public boolean isFavorite() {
+        return favorite;
+    }
+
+    public void setFavorite(boolean favorite) {
+        this.favorite = favorite;
+    }
 }

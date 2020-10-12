@@ -10,11 +10,11 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
-public class MusicPlayViewPagerAdapter extends FragmentStateAdapter {
+public class PlayViewPagerAdapter extends FragmentStateAdapter {
 
     private List<Song> mSongList;
 
-    public MusicPlayViewPagerAdapter(@NonNull FragmentActivity fragmentActivity, List<Song> songList) {
+    public PlayViewPagerAdapter(@NonNull FragmentActivity fragmentActivity, List<Song> songList) {
         super(fragmentActivity);
         mSongList = songList;
     }
@@ -28,5 +28,9 @@ public class MusicPlayViewPagerAdapter extends FragmentStateAdapter {
     @Override
     public int getItemCount() {
         return mSongList.size();
+    }
+
+    public void setSongList(List<Song> songList) {
+        mSongList = songList;
     }
 }

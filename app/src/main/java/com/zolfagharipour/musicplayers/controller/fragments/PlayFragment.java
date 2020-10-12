@@ -14,7 +14,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.transition.Explode;
 import android.transition.Fade;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,7 +22,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.zolfagharipour.musicplayers.R;
-import com.zolfagharipour.musicplayers.adapter.MusicPlayViewPagerAdapter;
+import com.zolfagharipour.musicplayers.adapter.PlayViewPagerAdapter;
 import com.zolfagharipour.musicplayers.enums.MusicRepeatMode;
 import com.zolfagharipour.musicplayers.model.Song;
 import com.zolfagharipour.musicplayers.repository.MusicRepository;
@@ -42,15 +41,18 @@ import androidx.palette.graphics.Palette;
 import androidx.vectordrawable.graphics.drawable.AnimatedVectorDrawableCompat;
 import androidx.viewpager2.widget.ViewPager2;
 
-public class MusicPlayFragment extends Fragment implements MediaPlayer.OnCompletionListener {
+public class PlayFragment extends Fragment implements MediaPlayer.OnCompletionListener {
 
     public static final String ARG_SONG_INSTANCE = "ArgSongInstance";
     public static final String TAG = "tag";
     private ViewPager2 mViewPager2;
+    private PlayViewPagerAdapter mViewPagerAdapter;
+
     private AnimatedVectorDrawableCompat mAnimatedVectorDrawableCompat;
     private AnimatedVectorDrawable mAnimatedVectorDrawable;
     private TextView mTextViewSongTitle, mTextViewSongAlbum, mTextViewElapsedTime, mTextViewTotalTime;
     private ImageView mImageViewFavorite, mImageViewShuffle, mImageViewBackward,mImageViewPlayPause, mImageViewForward, mImageViewRepeat, mImageViewAddToPlayList;
+
 
     private SeekBar mSeekBar;
     private MusicRepository mRepository;
@@ -62,11 +64,11 @@ public class MusicPlayFragment extends Fragment implements MediaPlayer.OnComplet
     private ConstraintLayout mConstraintLayoutRoot;
     private MediaPlayer mMediaPlayer;
 
-    public static MusicPlayFragment newInstance(Song song) {
+    public static PlayFragment newInstance(Song song) {
 
         Bundle args = new Bundle();
         args.putSerializable(ARG_SONG_INSTANCE, song);
-        MusicPlayFragment fragment = new MusicPlayFragment();
+        PlayFragment fragment = new PlayFragment();
         fragment.setArguments(args);
         return fragment;
     }
@@ -104,7 +106,7 @@ public class MusicPlayFragment extends Fragment implements MediaPlayer.OnComplet
 
     private void initialization() {
         mRepository = MusicRepository.getInstance();
-        mSongList = mRepository.getSongList();
+        mSongList = mRepository.getCurrentSongList();
         mSong = mRepository.getCurrentSong();
         mUri = Uri.parse(mSong.getPath());
     }
@@ -128,7 +130,8 @@ public class MusicPlayFragment extends Fragment implements MediaPlayer.OnComplet
     }
 
     private void setViewPager() {
-        mViewPager2.setAdapter(new MusicPlayViewPagerAdapter(getActivity(), mSongList));
+        mViewPagerAdapter = new PlayViewPagerAdapter(getActivity(), mSongList);
+        mViewPager2.setAdapter(mViewPagerAdapter);
         mViewPager2.setCurrentItem(getSongPosition(), false);
     }
 
@@ -138,6 +141,14 @@ public class MusicPlayFragment extends Fragment implements MediaPlayer.OnComplet
         mTextViewTotalTime.setText(TimeFormatPlayer.elapsedTime(Integer.parseInt(mSong.getDuration())));
         mSeekBar.setMax(Integer.parseInt(mSong.getDuration()));
         setImagePalette();
+        setFavorite();
+    }
+
+    private void setFavorite(){
+        if (mSong.isFavorite())
+            mImageViewFavorite.setImageResource(R.drawable.ic_favorite);
+        else
+            mImageViewFavorite.setImageResource(R.drawable.ic_favorite_border);
     }
 
     private void onConfiguration(Bundle savedInstanceState) {
@@ -217,11 +228,11 @@ public class MusicPlayFragment extends Fragment implements MediaPlayer.OnComplet
                 if (mMediaPlayer != null && !mMediaPlayer.isPlaying()){
                     mMediaPlayer.start();
                     mHandler.removeCallbacks(mRunnable);
-                    setAnimationPlayPauseDrawable(mImageViewPlayPause, R.drawable.avd_play_to_pause);
+                    setDrawableAnimation(mImageViewPlayPause, R.drawable.avd_play_to_pause);
                 }else if (mMediaPlayer != null && mMediaPlayer.isPlaying()){
                     mMediaPlayer.pause();
                     setSeekBar();
-                    setAnimationPlayPauseDrawable(mImageViewPlayPause, R.drawable.avd_pause_to_play);
+                    setDrawableAnimation(mImageViewPlayPause, R.drawable.avd_pause_to_play);
                 }
             }
         });
@@ -257,10 +268,10 @@ public class MusicPlayFragment extends Fragment implements MediaPlayer.OnComplet
                 }else if (mRepository.getMusicRepeatMode() == MusicRepeatMode.REPEAT_OFF){
                     mImageViewRepeat.setAlpha(1f);
                     mRepository.setMusicRepeatMode(MusicRepeatMode.REPEAT_ONE);
-                    setAnimationPlayPauseDrawable(mImageViewRepeat, R.drawable.avd_repeat_to_one);
+                    setDrawableAnimation(mImageViewRepeat, R.drawable.avd_repeat_to_one);
                 }else if (mRepository.getMusicRepeatMode() == MusicRepeatMode.REPEAT_ONE){
                     mRepository.setMusicRepeatMode(MusicRepeatMode.REPEAT_ALL);
-                    setAnimationPlayPauseDrawable(mImageViewRepeat, R.drawable.avd_one_to_repeat);
+                    setDrawableAnimation(mImageViewRepeat, R.drawable.avd_one_to_repeat);
                 }
             }
         });
@@ -276,6 +287,35 @@ public class MusicPlayFragment extends Fragment implements MediaPlayer.OnComplet
                     mImageViewShuffle.setAlpha(1f);
                     mRepository.setShuffleOn(true);
                 }
+            }
+        });
+
+        mImageViewFavorite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mSong.isFavorite()) {
+                    mSong.setFavorite(false);
+
+                    for (int i = 0; i <mRepository.getPlayLists().get(0).getSongList().size() ; i++) {
+                        if (mRepository.getPlayLists().get(0).getSongList().get(i).getPath().equals(mSong.getPath())) {
+                            mRepository.getPlayLists().get(0).getSongList().remove(i);
+                            break;
+                        }
+                    }
+                    setDrawableAnimation(mImageViewFavorite, R.drawable.avd_to_un_favorite);
+                }
+                else {
+                    mSong.setFavorite(true);
+                    mRepository.getPlayLists().get(0).getSongList().add(mSong);
+                    setDrawableAnimation(mImageViewFavorite, R.drawable.avd_to_favorite);
+                }
+                mRepository.updateFavorite(mSong);
+
+                /*if (mRepository.getCurrentListTitle().equals(mRepository.getPlayLists().get(0).getTitle())){
+                    mRepository.setCurrentSongList(mRepository.getPlayLists().get(0).getSongList(), mRepository.getPlayLists().get(0).getTitle());
+                    mSongList = mRepository.getCurrentSongList();
+                    mViewPagerAdapter.setSongList(mSongList);
+                }*/
             }
         });
     }
@@ -324,8 +364,8 @@ public class MusicPlayFragment extends Fragment implements MediaPlayer.OnComplet
         setSeekBar();
     }
 
-    private void setAnimationPlayPauseDrawable(ImageView imageView,int p) {
-        imageView.setImageDrawable(getResources().getDrawable(p));
+    private void setDrawableAnimation(ImageView imageView, int resId) {
+        imageView.setImageDrawable(getResources().getDrawable(resId));
         Drawable drawable = imageView.getDrawable();
 
         if (drawable instanceof AnimatedVectorDrawableCompat) {
@@ -381,8 +421,8 @@ public class MusicPlayFragment extends Fragment implements MediaPlayer.OnComplet
     }
 
     private int getSongPosition() {
-        for (int i = 0; i < mRepository.getSongList().size(); i++) {
-            if (mSong.getPath().equals(mRepository.getSongList().get(i).getPath()))
+        for (int i = 0; i < mRepository.getCurrentSongList().size(); i++) {
+            if (mSong.getPath().equals(mRepository.getCurrentSongList().get(i).getPath()))
                 return i;
         }
         return -1;

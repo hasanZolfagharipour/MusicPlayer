@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/songPlayContainer"
-    tools:context=".controller.fragments.MusicPlayFragment">
+    tools:context=".controller.fragments.PlayFragment">
 
     <androidx.appcompat.widget.Toolbar
         android:layout_width="match_parent"

@@ -2,15 +2,20 @@ package com.zolfagharipour.musicplayers.controller.activity;
 
 import android.Manifest;
 import android.content.Intent;
+import android.media.MediaPlayer;
+import android.os.Build;
 import android.os.Bundle;
 
 import com.zolfagharipour.musicplayers.R;
 import com.zolfagharipour.musicplayers.controller.fragments.TabFragment;
+import com.zolfagharipour.musicplayers.controller.fragments.TrackTabFragment;
+import com.zolfagharipour.musicplayers.repository.MusicRepository;
 
 import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.AppSettingsDialog;
@@ -84,4 +89,5 @@ public class MusicPlayersActivity extends AppCompatActivity implements EasyPermi
             }
         }
     }
+
 }

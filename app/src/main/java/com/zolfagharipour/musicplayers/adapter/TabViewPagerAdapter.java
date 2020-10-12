@@ -3,6 +3,7 @@ package com.zolfagharipour.musicplayers.adapter;
 ;
 
 import com.zolfagharipour.musicplayers.controller.fragments.AlbumTabFragment;
+import com.zolfagharipour.musicplayers.controller.fragments.PlayListTabFragment;
 import com.zolfagharipour.musicplayers.controller.fragments.TrackTabFragment;
 
 import androidx.annotation.NonNull;
@@ -10,9 +11,9 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
-public class MusicTabViewPagerAdapter extends FragmentStateAdapter {
+public class TabViewPagerAdapter extends FragmentStateAdapter {
 
-    public MusicTabViewPagerAdapter(@NonNull FragmentActivity fragmentActivity) {
+    public TabViewPagerAdapter(@NonNull FragmentActivity fragmentActivity) {
         super(fragmentActivity);
     }
 
@@ -21,8 +22,10 @@ public class MusicTabViewPagerAdapter extends FragmentStateAdapter {
     public Fragment createFragment(int position) {
         if (position == 0)
             return TrackTabFragment.newInstance();
-        else
+        else if (position == 1)
             return AlbumTabFragment.newInstance();
+        else
+            return PlayListTabFragment.newInstance();
     }
 
     @Override

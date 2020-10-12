@@ -1,7 +1,6 @@
 package com.zolfagharipour.musicplayers.controller.fragments;
 
 import android.os.Bundle;
-import android.transition.Explode;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +17,7 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class TrackTabFragment extends Fragment implements MusicListRecyclerViewAdapter.MusicItemListener, TabFragment.OnUpdateMusicListListener {
+public class TrackTabFragment extends Fragment implements MusicListRecyclerViewAdapter.MusicItemListener {
 
 
     private RecyclerView mRecyclerView;
@@ -50,6 +49,7 @@ public class TrackTabFragment extends Fragment implements MusicListRecyclerViewA
         findViews(view);
         setRecyclerView();
         setUI();
+
         return view;
     }
 
@@ -77,11 +77,7 @@ public class TrackTabFragment extends Fragment implements MusicListRecyclerViewA
     @Override
     public void onMusicItemClicked(Song song) {
         mRepository.setCurrentSong(song);
-        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, MusicPlayFragment.newInstance(song)).addToBackStack(null).commit();
-    }
-
-    @Override
-    public void onUpdateRecyclerView(){
-        setUI();
+        mRepository.setCurrentSongList(mRepository.getSongList(), "TrackTab");
+        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, PlayFragment.newInstance(song)).addToBackStack(null).commit();
     }
 }

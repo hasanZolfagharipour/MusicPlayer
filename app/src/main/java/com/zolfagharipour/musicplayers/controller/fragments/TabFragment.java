@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.zolfagharipour.musicplayers.R;
-import com.zolfagharipour.musicplayers.adapter.MusicTabViewPagerAdapter;
+import com.zolfagharipour.musicplayers.adapter.TabViewPagerAdapter;
 import com.zolfagharipour.musicplayers.controller.activity.MusicPlayersActivity;
 import com.zolfagharipour.musicplayers.repository.MusicRepository;
 import com.zolfagharipour.musicplayers.utils.MusicManager;
@@ -24,12 +24,13 @@ import androidx.viewpager2.widget.ViewPager2;
 
 public class TabFragment extends Fragment {
 
+    public static final String TAG = "tag";
     private MusicRepository mRepository;
     private Toolbar mToolbar;
     private ViewPager2 mViewPager;
-    private MusicTabViewPagerAdapter mPagerAdapter;
+    private TabViewPagerAdapter mPagerAdapter;
     private TabLayout mTabLayout;
-    private OnUpdateMusicListListener mOnUpdateMusicListListener;
+
 
     public static TabFragment newInstance() {
 
@@ -56,6 +57,7 @@ public class TabFragment extends Fragment {
         setToolbar();
         setViewPager();
         setTabLayout();
+        setListener();
 
         return view;
     }
@@ -85,15 +87,29 @@ public class TabFragment extends Fragment {
                         tab.setText(getString(R.string.albums));
                         break;
                     case 2:
-                        tab.setText(getString(R.string.singers));
+                        tab.setText(getString(R.string.playlist));
                 }
             }
         }).attach();
     }
 
     private void setViewPager() {
-        mPagerAdapter = new MusicTabViewPagerAdapter(getActivity());
+        mPagerAdapter = new TabViewPagerAdapter(getActivity());
         mViewPager.setAdapter(mPagerAdapter);
+    }
+
+    private void setListener(){
+        mViewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+            @Override
+            public void onPageSelected(int position) {
+                super.onPageSelected(position);
+
+                for (int i = 0; i < getActivity().getSupportFragmentManager().getFragments().size(); i++) {
+                    if (getActivity().getSupportFragmentManager().getFragments().get(i) instanceof PlayListTabFragment)
+                        ((PlayListTabFragment)getActivity().getSupportFragmentManager().getFragments().get(i)).setAdapter();
+                }
+            }
+        });
     }
 
     @Override
@@ -106,7 +122,6 @@ public class TabFragment extends Fragment {
         switch (item.getItemId()){
             case R.id.tabMenuRefresh:
                 mRepository.setSongList(MusicManager.getSongList(getActivity()));
-                mOnUpdateMusicListListener.onUpdateRecyclerView();
                 return true;
             case R.id.tabMenuExitApp:
                 getActivity().finish();
@@ -117,8 +132,5 @@ public class TabFragment extends Fragment {
 
     }
 
-    public interface OnUpdateMusicListListener{
-        void onUpdateRecyclerView();
-    }
 
 }
