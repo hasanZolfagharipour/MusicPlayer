@@ -21,7 +21,7 @@ import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.AppSettingsDialog;
 import pub.devrel.easypermissions.EasyPermissions;
 
-public class MusicPlayersActivity extends AppCompatActivity implements EasyPermissions.PermissionCallbacks, EasyPermissions.RationaleCallbacks {
+public class MusicPlayersActivity extends AppCompatActivity implements EasyPermissions.PermissionCallbacks, EasyPermissions.RationaleCallbacks, TabFragment.OnMusicMenuItemSelectedListener {
 
 
     public static final int REQUEST_CODE_PERMISSION_EXTERNAL_STORAGE = 10;
@@ -90,4 +90,13 @@ public class MusicPlayersActivity extends AppCompatActivity implements EasyPermi
         }
     }
 
+    @Override
+    public void onRefreshMusicList() {
+        for (int i = 0; i < getSupportFragmentManager().getFragments().size(); i++) {
+            if (getSupportFragmentManager().getFragments().get(i) instanceof TrackTabFragment) {
+                ((TrackTabFragment) getSupportFragmentManager().getFragments().get(i)).setUI();
+                break;
+            }
+        }
+    }
 }

@@ -93,6 +93,7 @@ public class PlayListScreenFragment extends Fragment implements PlayListScreenRe
         if (position == 0) {
 
             final EditText editText = new EditText(getActivity());
+            editText.setSingleLine();
             editText.setHint(R.string.playlist_name);
 
             SweetAlertDialog sweetAlertDialognew = new SweetAlertDialog(Objects.requireNonNull(getActivity()));
@@ -106,7 +107,7 @@ public class PlayListScreenFragment extends Fragment implements PlayListScreenRe
                             for (int i = 0; i < mRepository.getPlayLists().size(); i++) {
                                 if (mRepository.getPlayLists().get(i).getTitle().equalsIgnoreCase(editText.getText().toString())) {
                                     new SweetAlertDialog(getActivity(), SweetAlertDialog.WARNING_TYPE)
-                                            .setContentText(editText.getText().toString() + " already existed.")
+                                            .setContentText(editText.getText().toString() + getString(R.string.already_exist))
                                             .setConfirmButton(android.R.string.ok, null)
                                             .show();
                                     return;
@@ -133,10 +134,11 @@ public class PlayListScreenFragment extends Fragment implements PlayListScreenRe
                     return;
                 }
             }
-            Log.d(TAG, "onItemSelectedListener: ");
             mRepository.getPlayLists().get(--position).getSongList().add(mRepository.getCurrentSong());
-            mRepository.getCurrentSong().setFavorite(true);
-            mRepository.updateFavorite(mRepository.getCurrentSong());
+            if (position == 0) {
+                mRepository.getCurrentSong().setFavorite(true);
+                mRepository.updateFavorite(mRepository.getCurrentSong());
+            }
             if (getActivity() != null)
                 getActivity().onBackPressed();
         }

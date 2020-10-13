@@ -1,23 +1,19 @@
 package com.zolfagharipour.musicplayers.controller.fragments;
 
-import android.content.Context;
-import android.content.Intent;
-import android.content.res.Configuration;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.zolfagharipour.musicplayers.R;
+import com.zolfagharipour.musicplayers.adapter.MusicListRecyclerViewAdapter;
 import com.zolfagharipour.musicplayers.adapter.PlayListRecyclerViewAdapter;
 import com.zolfagharipour.musicplayers.model.PlayList;
 import com.zolfagharipour.musicplayers.model.Song;
@@ -26,7 +22,7 @@ import com.zolfagharipour.musicplayers.repository.MusicRepository;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PlayListTabFragment extends Fragment  implements PlayListRecyclerViewAdapter.OnCollectionListener {
+public class PlayListTabFragment extends Fragment  implements PlayListRecyclerViewAdapter.OnCollectionListener, MusicListRecyclerViewAdapter.MusicItemListener {
 
     public static final String TAG= "tag";
 
@@ -41,8 +37,9 @@ public class PlayListTabFragment extends Fragment  implements PlayListRecyclerVi
 
     private MusicRepository mRepository;
     private List<PlayList> mPlayLists;
-    private RecyclerView mRecyclerView;
-    private PlayListRecyclerViewAdapter mAdapter;
+    private RecyclerView mRecyclerViewCollection, mRecyclerViewSongList;
+    private PlayListRecyclerViewAdapter mAdapterCollection;
+    private MusicListRecyclerViewAdapter mAdapterSongList;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -63,18 +60,22 @@ public class PlayListTabFragment extends Fragment  implements PlayListRecyclerVi
     }
 
     private void findViews(View view){
-        mRecyclerView = view.findViewById(R.id.albumRecyclerView);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+        mRecyclerViewCollection = view.findViewById(R.id.albumTabCollectionRecyclerView);
+        mRecyclerViewSongList = view.findViewById(R.id.albumTabSongListRecyclerView);
+        mRecyclerViewCollection.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+        mRecyclerViewSongList.setLayoutManager(new LinearLayoutManager(getActivity()));
     }
     public  void setAdapter(){
-        if (mAdapter == null){
-            mAdapter = new PlayListRecyclerViewAdapter(getActivity(), mPlayLists, this);
-            mRecyclerView.setAdapter(mAdapter);
+        if (mAdapterCollection == null){
+            mAdapterCollection = new PlayListRecyclerViewAdapter(getActivity(), mPlayLists, this);
+            mRecyclerViewCollection.setAdapter(mAdapterCollection);
         }else {
-            mAdapter.setPlayLists(mPlayLists);
-            mAdapter.notifyDataSetChanged();
+            mAdapterCollection.setPlayLists(mPlayLists);
+            mAdapterCollection.notifyDataSetChanged();
         }
     }
+
+
 
 
     @Override
@@ -87,13 +88,25 @@ public class PlayListTabFragment extends Fragment  implements PlayListRecyclerVi
         List<Song> list = new ArrayList<>();
         list.addAll(playList.getSongList());
         mRepository.setCurrentSongList(list, playList.getTitle());
-        
-        getActivity()
+
+        mAdapterSongList = new MusicListRecyclerViewAdapter(list, getActivity(), this);
+        mRecyclerViewSongList.setAdapter(mAdapterSongList);
+        mRecyclerViewSongList.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
+
+
+       /* getActivity()
                 .getSupportFragmentManager()
                 .beginTransaction()
                 .addToBackStack(null)
                 .replace(R.id.fragmentContainer, CollectionsTrackFragment.newInstance())
-                .commit();
+                .commit();*/
+
+    }
+
+    @Override
+    public void onMusicItemClicked(Song song) {
+        mRepository.setCurrentSong(song);
+        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, PlayFragment.newInstance(song)).addToBackStack(null).commit();
 
     }
 }

@@ -34,7 +34,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Random;
 
-import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
@@ -88,7 +87,7 @@ public class PlayFragment extends Fragment implements MediaPlayer.OnCompletionLi
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_music_play, container, false);
+        View view = inflater.inflate(R.layout.fragment_play, container, false);
 
 
         findViews(view);
@@ -328,7 +327,6 @@ public class PlayFragment extends Fragment implements MediaPlayer.OnCompletionLi
         mImageViewAddToPlayList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               // getActivity().getSupportFragmentManager().popBackStack(this.getClass().getName(), 0);
                 Objects.requireNonNull(getActivity()).getSupportFragmentManager().beginTransaction().addToBackStack(null).replace(R.id.fragmentContainer, PlayListScreenFragment.newInstance()).commit();
 
             }

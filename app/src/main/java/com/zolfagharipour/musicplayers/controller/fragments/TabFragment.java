@@ -1,6 +1,8 @@
 package com.zolfagharipour.musicplayers.controller.fragments;
 
+import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -30,7 +32,7 @@ public class TabFragment extends Fragment {
     private ViewPager2 mViewPager;
     private TabViewPagerAdapter mPagerAdapter;
     private TabLayout mTabLayout;
-
+    private OnMusicMenuItemSelectedListener mSelectedListener;
 
     public static TabFragment newInstance() {
 
@@ -121,7 +123,10 @@ public class TabFragment extends Fragment {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
             case R.id.tabMenuRefresh:
-                mRepository.setSongList(MusicManager.getSongList(getActivity()));
+                mRepository.setSongList(MusicManager.getSongList(getActivity().getApplicationContext()));
+                Log.d(TAG, "MusicManager.getSongList(getActivity()).size(): " + MusicManager.getSongList(getActivity().getApplicationContext()).size());
+                Log.d(TAG, "mRepository.getSongList().size(): " + mRepository.getSongList().size());
+                mSelectedListener.onRefreshMusicList();
                 return true;
             case R.id.tabMenuExitApp:
                 getActivity().finish();
@@ -132,5 +137,15 @@ public class TabFragment extends Fragment {
 
     }
 
+    public interface OnMusicMenuItemSelectedListener {
+        void onRefreshMusicList();
+    }
 
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        if (context instanceof OnMusicMenuItemSelectedListener)
+            mSelectedListener = (OnMusicMenuItemSelectedListener) context;
+
+    }
 }

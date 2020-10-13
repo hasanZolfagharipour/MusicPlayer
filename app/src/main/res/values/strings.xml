@@ -24,6 +24,7 @@
     <string name="create_playlist">Create playlist</string>
     <string name="create">Create</string>
     <string name="playlist_name">Playlist name...</string>
+    <string name="already_exist">\ already existed.\</string>
 
 
 </resources>

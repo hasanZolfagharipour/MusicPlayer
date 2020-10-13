@@ -1,9 +1,11 @@
 package com.zolfagharipour.musicplayers.controller.fragments;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.zolfagharipour.musicplayers.R;
 import com.zolfagharipour.musicplayers.adapter.MusicListRecyclerViewAdapter;
@@ -20,6 +22,7 @@ import androidx.recyclerview.widget.RecyclerView;
 public class TrackTabFragment extends Fragment implements MusicListRecyclerViewAdapter.MusicItemListener {
 
 
+    public static final String TAG = "tag";
     private RecyclerView mRecyclerView;
     private MusicListRecyclerViewAdapter mAdapter;
     private MusicRepository mRepository;
@@ -64,11 +67,14 @@ public class TrackTabFragment extends Fragment implements MusicListRecyclerViewA
     }
 
     public void setUI() {
-
+        Log.d(TAG, "setUI:1 ");
         if (mAdapter == null) {
+            Log.d(TAG, "setUI:2 ");
             mAdapter = new MusicListRecyclerViewAdapter(mSongList, getActivity(), this);
             mRecyclerView.setAdapter(mAdapter);
         } else {
+            Log.d(TAG, "setUI:3 ");
+            mSongList = mRepository.getSongList();
             mAdapter.setSongList(mSongList);
             mAdapter.notifyDataSetChanged();
         }
