@@ -21,6 +21,9 @@
     <string name="transition_image">transitionImage</string>
     <string name="refresh">Refresh</string>
     <string name="no_tracks">No tracks!</string>
+    <string name="create_playlist">Create playlist</string>
+    <string name="create">Create</string>
+    <string name="playlist_name">Playlist name...</string>
 
 
 </resources>

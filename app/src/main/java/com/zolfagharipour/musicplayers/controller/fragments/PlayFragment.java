@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.transition.Explode;
 import android.transition.Fade;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,8 +31,10 @@ import com.zolfagharipour.musicplayers.utils.MusicManager;
 import com.zolfagharipour.musicplayers.utils.TimeFormatPlayer;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
@@ -63,6 +66,7 @@ public class PlayFragment extends Fragment implements MediaPlayer.OnCompletionLi
     private Runnable mRunnable;
     private ConstraintLayout mConstraintLayoutRoot;
     private MediaPlayer mMediaPlayer;
+    
 
     public static PlayFragment newInstance(Song song) {
 
@@ -79,6 +83,7 @@ public class PlayFragment extends Fragment implements MediaPlayer.OnCompletionLi
         initialization();
         setReturnTransition(new Fade());
         setEnterTransition(new Explode());
+        Log.d(TAG, "onCreate: ");
     }
 
     @Override
@@ -100,6 +105,7 @@ public class PlayFragment extends Fragment implements MediaPlayer.OnCompletionLi
 
         setListener();
 
+        Log.d(TAG, "onCreateView: ");
 
         return view;
     }
@@ -318,7 +324,18 @@ public class PlayFragment extends Fragment implements MediaPlayer.OnCompletionLi
                 }*/
             }
         });
+
+        mImageViewAddToPlayList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               // getActivity().getSupportFragmentManager().popBackStack(this.getClass().getName(), 0);
+                Objects.requireNonNull(getActivity()).getSupportFragmentManager().beginTransaction().addToBackStack(null).replace(R.id.fragmentContainer, PlayListScreenFragment.newInstance()).commit();
+
+            }
+        });
     }
+
+
 
     private int getRandomNumberForShuffle(){
         int number =  new Random().nextInt(mSongList.size());
