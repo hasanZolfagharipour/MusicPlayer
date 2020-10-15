@@ -178,8 +178,14 @@ public class PlayFragment extends Fragment implements MediaPlayer.OnCompletionLi
             mMediaPlayer = mRepository.getMediaPlayer();
             mHandler = new Handler();
         } else {
-            setMediaPlayer();
-            mMediaPlayer.start();
+
+            if (mRepository.getMediaPlayer() != null  && mRepository.getMediaPlayer().isPlaying()){
+                mMediaPlayer = mRepository.getMediaPlayer();
+                mHandler = new Handler();
+            }else {
+                setMediaPlayer();
+                mMediaPlayer.start();
+            }
         }
     }
 

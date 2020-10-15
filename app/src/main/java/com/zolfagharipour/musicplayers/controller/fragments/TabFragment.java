@@ -50,18 +50,13 @@ public class TabFragment extends Fragment {
         mRepository = SongRepository.getInstance();
         mRepository.setSongList(MusicUtils.getSongList(getActivity().getApplicationContext()));
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            Window window = getActivity().getWindow();
-            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            window.setStatusBarColor(getResources().getColor(R.color.colorDefaultTabGray));
-            window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_tab, container, false);
 
+        setStatusBarColor();
         findViews(view);
         setToolbar();
         setViewPager();
@@ -71,6 +66,15 @@ public class TabFragment extends Fragment {
         return view;
     }
 
+
+    private void setStatusBarColor(){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Window window = getActivity().getWindow();
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.setStatusBarColor(getResources().getColor(R.color.colorDefaultTabGray));
+            window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+        }
+    }
 
     private void findViews(View view) {
         mToolbar = view.findViewById(R.id.tabFragmentToolbar);
