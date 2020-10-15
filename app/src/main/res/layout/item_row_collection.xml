@@ -7,7 +7,7 @@
 
 
     <ImageView
-        android:id="@+id/collectionItemRowImage"
+        android:id="@+id/itemRowCollectionImageView"
         android:layout_width="@dimen/image_album_size"
         android:layout_height="@dimen/image_album_size"
         app:layout_constraintEnd_toEndOf="parent"
@@ -15,9 +15,8 @@
         app:layout_constraintTop_toTopOf="parent" />
 
 
-
     <TextView
-        android:id="@+id/collectionItemRowTitle"
+        android:id="@+id/itemRowCollectionTextViewTitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
@@ -28,23 +27,21 @@
         android:singleLine="true"
         android:textColor="@color/colorBlack"
         android:textSize="@dimen/default_title_font_size"
-        app:layout_constraintTop_toBottomOf="@id/collectionItemRowImage"
-        app:layout_constraintEnd_toEndOf="@id/collectionItemRowImage"
-        app:layout_constraintStart_toStartOf="@id/collectionItemRowImage" />
+        app:layout_constraintEnd_toEndOf="@id/itemRowCollectionImageView"
+        app:layout_constraintStart_toStartOf="@id/itemRowCollectionImageView"
+        app:layout_constraintTop_toBottomOf="@id/itemRowCollectionImageView" />
 
     <TextView
-        android:id="@+id/collectionItemRowSubtitle"
+        android:id="@+id/itemRowCollectionTextViewSubtitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:singleLine="true"
-        android:textSize="@dimen/default_subtitle_font_size"
         android:textColor="@color/colorTabTextDarkGray"
-        app:layout_constraintTop_toBottomOf="@id/collectionItemRowTitle"
-        app:layout_constraintStart_toStartOf="@id/collectionItemRowImage"
-        app:layout_constraintEnd_toEndOf="@id/collectionItemRowImage"/>
-
-
+        android:textSize="@dimen/default_subtitle_font_size"
+        app:layout_constraintEnd_toEndOf="@id/itemRowCollectionImageView"
+        app:layout_constraintStart_toStartOf="@id/itemRowCollectionImageView"
+        app:layout_constraintTop_toBottomOf="@id/itemRowCollectionTextViewTitle" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

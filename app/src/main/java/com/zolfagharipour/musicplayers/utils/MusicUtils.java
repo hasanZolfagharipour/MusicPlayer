@@ -9,9 +9,7 @@ import com.zolfagharipour.musicplayers.model.Song;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MusicManager {
-
-    public static final String TAG = "tag";
+public class MusicUtils {
 
     public static List<Song> getSongList(Context context) {
 
@@ -44,7 +42,18 @@ public class MusicManager {
         return art;
     }
 
-
-
+    public static String elapsedTime(int currentPosition){
+        currentPosition /= 1000;
+        String totalOld = "";
+        String totalNew = "";
+        String seconds = String.valueOf(currentPosition % 60);
+        String minutes = String.valueOf(currentPosition / 60);
+        totalOld = minutes + ":" + seconds;
+        totalNew = minutes + ":" + "0" + seconds;
+        if (seconds.length() == 1)
+            return totalNew;
+        else
+            return totalOld;
+    }
 
 }

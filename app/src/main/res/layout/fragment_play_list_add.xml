@@ -5,32 +5,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorDefaultTabGray"
-    tools:context=".controller.fragments.TabFragment">
+    tools:context=".controller.fragments.AddPlayListFragment">
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/tabFragmentToolbar"
+        android:id="@+id/addPlayListToolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/colorDefaultTabGray"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:menu="@menu/music_tab_menu"
-        app:title="@string/music_player"
-        app:titleTextColor="@color/colorTabTextDarkGray" />
+        app:layout_constraintTop_toTopOf="parent" />
 
-
-    <com.google.android.material.tabs.TabLayout
-        android:id="@+id/tabFragmentTabLayout"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="@color/colorDefaultTabGray"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tabFragmentToolbar"
-        app:tabGravity="fill"
-        app:tabIndicatorHeight="0dp"
-        app:tabMaxWidth="0dp" />
 
     <com.google.android.material.card.MaterialCardView
         style="@style/CustomCardViewStyle"
@@ -39,14 +23,16 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tabFragmentTabLayout">
+        app:layout_constraintTop_toBottomOf="@id/addPlayListToolbar">
 
-
-        <androidx.viewpager2.widget.ViewPager2
-            android:id="@+id/tabFragmentViewPager"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/addPlayListRecyclerView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:layout_margin="4dp" />
+
 
     </com.google.android.material.card.MaterialCardView>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

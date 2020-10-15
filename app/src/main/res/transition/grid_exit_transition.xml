@@ -5,7 +5,7 @@
     android:interpolator="@android:interpolator/fast_out_slow_in"
     android:startDelay="25">
     <fade>
-        <targets android:targetId="@+id/musicPlayFragmentCover"/>
+        <targets android:targetId="@+id/songCoverFragmentImageView"/>
     </fade>
 
 </transitionSet>

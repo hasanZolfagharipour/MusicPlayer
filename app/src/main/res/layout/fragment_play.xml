@@ -1,174 +1,195 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/songPlayContainer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/songPlayContainer"
     tools:context=".controller.fragments.PlayFragment">
 
     <androidx.appcompat.widget.Toolbar
+        android:id="@+id/playFragmentToolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:id="@+id/songPlayToolbar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:menu="@menu/music_play_menu">
 
         <ImageView
+            android:id="@+id/playFragmentImageViewDownScreen"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_down"
             android:rotation="90"
-            android:id="@+id/songPlayDownScreen"/>
+            android:src="@drawable/ic_down" />
 
 
     </androidx.appcompat.widget.Toolbar>
 
-    <androidx.viewpager2.widget.ViewPager2
+
+    <LinearLayout
+        android:id="@+id/playFragmentViewPagerContainer"
         android:layout_width="match_parent"
         android:layout_height="300dp"
-        app:layout_constraintTop_toBottomOf="@id/songPlayToolbar"
-        android:id="@+id/viewPagerSongPlay"/>
-
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/songPlayTitle"
-        android:transitionName="@string/transition_title"
-        app:layout_constraintTop_toBottomOf="@id/viewPagerSongPlay"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:orientation="vertical"
         android:gravity="center"
-        android:textSize="@dimen/title_text_size"
-        android:textColor="@color/colorWhite"
-        android:layout_marginTop="@dimen/default_margin"/>
+        app:layout_constraintTop_toBottomOf="@id/playFragmentToolbar"
+        android:layout_marginTop="64dp">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/songPlayAlbum"
-        android:transitionName="@string/transition_album"
-        app:layout_constraintTop_toBottomOf="@id/songPlayTitle"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:gravity="center"
-        android:textSize="@dimen/subtitle_text_size"
-        android:textColor="@color/colorTabTextDarkGray"
-        android:layout_marginTop="@dimen/default_margin"/>
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/playFragmentViewPager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"/>
+
+        <TextView
+            android:id="@+id/playFragmentTextViewTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/default_margin"
+            android:gravity="center"
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/title_text_size"/>
+
+        <TextView
+            android:id="@+id/playFragmentTextViewSubtitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/default_margin"
+            android:gravity="center"
+            android:textColor="@color/colorTabTextDarkGray"
+            android:textSize="@dimen/subtitle_text_size"/>
+
+
+    </LinearLayout>
+
+
 
 
     <ImageView
-        android:src="@drawable/ic_favorite_border"
-        android:id="@+id/songPlayFavorite"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/songPlaySeekBar"
-        android:layout_marginStart="@dimen/default_margin"
-        android:layout_marginBottom="@dimen/default_margin"/>
-
-    <ImageView
+        android:id="@+id/playFragmentImageViewAddToPlayList"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:layout_marginEnd="8dp"
         android:src="@drawable/ic_add"
-        android:id="@+id/songPlayAddToPlayList"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/songPlaySeekBar"
-        android:layout_marginEnd="@dimen/default_margin"/>
+        app:layout_constraintBottom_toBottomOf="@id/playFragmentImageViewFavorite"
+        app:layout_constraintEnd_toEndOf="@id/playFragmentSeekBar"
+        app:layout_constraintTop_toTopOf="@id/playFragmentImageViewFavorite" />
+
+    <ImageView
+        android:id="@+id/playFragmentImageViewFavorite"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginStart="8dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:layout_marginBottom="32dp"
+        android:src="@drawable/ic_favorite_border"
+        app:layout_constraintBottom_toTopOf="@id/playFragmentSeekBar"
+        app:layout_constraintStart_toStartOf="@id/playFragmentSeekBar" />
 
 
     <SeekBar
+        android:id="@+id/playFragmentSeekBar"
         android:layout_width="match_parent"
         android:layout_height="16dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:backgroundTint="@color/colorTabTextDarkGray"
         android:progressTint="@color/colorWhite"
         android:thumbTint="@color/colorWhite"
-        android:backgroundTint="@color/colorTabTextDarkGray"
-        app:layout_constraintBottom_toTopOf="@id/songPlayElapsedTime"
+        app:layout_constraintBottom_toTopOf="@id/playFragmentTextViewElapsedTime"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/playFragmentTextViewElapsedTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/default_margin"
-        android:layout_marginEnd="@dimen/default_margin"
-        android:id="@+id/songPlaySeekBar"/>
+        android:layout_marginBottom="24dp"
+        android:textColor="@color/colorWhite"
+        app:layout_constraintBottom_toTopOf="@id/playFragmentIconViewShuffle"
+        app:layout_constraintStart_toStartOf="@id/playFragmentSeekBar" />
 
     <TextView
-        android:id="@+id/songPlayElapsedTime"
+        android:id="@+id/playFragmentTextViewTotalTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/colorWhite"
-        app:layout_constraintStart_toStartOf="@id/songPlaySeekBar"
-        app:layout_constraintBottom_toTopOf="@id/songPlayShuffle"
-        android:layout_marginStart="@dimen/default_margin"/>
-
-    <TextView
-        android:id="@+id/songPlayTotalTime"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/colorWhite"
-        app:layout_constraintTop_toTopOf="@id/songPlayElapsedTime"
-        app:layout_constraintBottom_toBottomOf="@id/songPlayElapsedTime"
         android:layout_marginEnd="@dimen/default_margin"
-        app:layout_constraintEnd_toEndOf="@id/songPlaySeekBar"/>
+        android:textColor="@color/colorWhite"
+        app:layout_constraintBottom_toBottomOf="@id/playFragmentTextViewElapsedTime"
+        app:layout_constraintEnd_toEndOf="@id/playFragmentSeekBar"
+        app:layout_constraintTop_toTopOf="@id/playFragmentTextViewElapsedTime" />
 
-
-    <ImageView
-        android:src="@drawable/ic_shuffle"
-        android:id="@+id/songPlayShuffle"
-        android:layout_width="56dp"
-        android:layout_height="56dp"
+    <com.github.zagum.switchicon.SwitchIconView
+        android:id="@+id/playFragmentIconViewShuffle"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        app:si_disabled_color="@color/colorWhite"
+        app:layout_constraintBottom_toBottomOf="@id/playFragmentImageViewPause"
+        app:layout_constraintEnd_toStartOf="@id/playFragmentImageViewBackward"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginStart="@dimen/default_margin"
-        android:layout_marginBottom="@dimen/default_margin"/>
+        app:layout_constraintTop_toTopOf="@id/playFragmentImageViewPause" />
 
 
     <ImageView
-        android:src="@drawable/ic_backward"
-        android:id="@+id/songPlayBackward"
+        android:id="@+id/playFragmentImageViewShuffle"
         android:layout_width="48dp"
         android:layout_height="48dp"
-        app:layout_constraintStart_toEndOf="@id/songPlayShuffle"
-        app:layout_constraintEnd_toStartOf="@id/songPlayPause"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginStart="@dimen/default_margin"
-        android:layout_marginBottom="@dimen/default_margin"/>
-
-
-    <ImageView
-        android:src="@drawable/ic_play"
-        android:id="@+id/songPlayPause"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        app:layout_constraintStart_toEndOf="@id/songPlayBackward"
-        app:layout_constraintEnd_toStartOf="@id/songPlayForward"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginStart="@dimen/default_margin"
-        android:layout_marginBottom="@dimen/default_margin"/>
-
+        android:src="@drawable/ic_shuffle"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        app:layout_constraintBottom_toBottomOf="@id/playFragmentImageViewPause"
+        app:layout_constraintEnd_toStartOf="@id/playFragmentImageViewBackward"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/playFragmentImageViewPause" />
 
     <ImageView
-        android:src="@drawable/ic_backward"
-        android:id="@+id/songPlayForward"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:rotation="180"
-        app:layout_constraintStart_toEndOf="@id/songPlayPause"
-        app:layout_constraintEnd_toStartOf="@id/songPlayRepeat"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginStart="@dimen/default_margin"
-        android:layout_marginBottom="@dimen/default_margin"/>
-
-
-    <ImageView
-        android:src="@drawable/ic_repeat"
-        android:id="@+id/songPlayRepeat"
+        android:id="@+id/playFragmentImageViewBackward"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:src="@drawable/ic_backward"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        app:layout_constraintBottom_toBottomOf="@id/playFragmentImageViewPause"
+        app:layout_constraintEnd_toStartOf="@id/playFragmentImageViewPause"
+        app:layout_constraintStart_toEndOf="@id/playFragmentIconViewShuffle"
+        app:layout_constraintTop_toTopOf="@id/playFragmentImageViewPause" />
+
+
+    <ImageView
+        android:id="@+id/playFragmentImageViewPause"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginBottom="@dimen/margin_bottom_play_element"
+        android:src="@drawable/ic_play"
+        android:background="?attr/selectableItemBackgroundBorderless"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginEnd="@dimen/default_margin"
-        android:layout_marginBottom="@dimen/default_margin"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
+    <ImageView
+        android:id="@+id/playFragmentImageViewForward"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:src="@drawable/ic_forward"
+        app:layout_constraintBottom_toBottomOf="@id/playFragmentImageViewPause"
+        app:layout_constraintEnd_toStartOf="@id/playFragmentImageViewRepeat"
+        app:layout_constraintStart_toEndOf="@id/playFragmentImageViewPause"
+        app:layout_constraintTop_toTopOf="@id/playFragmentImageViewPause" />
+
+
+    <ImageView
+        android:id="@+id/playFragmentImageViewRepeat"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:src="@drawable/ic_repeat"
+        app:layout_constraintBottom_toBottomOf="@id/playFragmentImageViewPause"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/playFragmentImageViewForward"
+        app:layout_constraintTop_toTopOf="@id/playFragmentImageViewPause" />
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -14,11 +14,6 @@ public class PlayList implements Serializable {
         mPlayListId = UUID.randomUUID();
     }
 
-    public PlayList(String title) {
-        this();
-        mTitle = title;
-    }
-
     public PlayList(String title, List<Song> songList) {
         this();
         mTitle = title;

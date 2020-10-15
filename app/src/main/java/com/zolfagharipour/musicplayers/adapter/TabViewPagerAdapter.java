@@ -2,9 +2,9 @@ package com.zolfagharipour.musicplayers.adapter;
 
 ;
 
-import com.zolfagharipour.musicplayers.controller.fragments.AlbumTabFragment;
-import com.zolfagharipour.musicplayers.controller.fragments.PlayListTabFragment;
-import com.zolfagharipour.musicplayers.controller.fragments.TrackTabFragment;
+import com.zolfagharipour.musicplayers.controller.fragments.TabAlbumFragment;
+import com.zolfagharipour.musicplayers.controller.fragments.TabPlayListFragment;
+import com.zolfagharipour.musicplayers.controller.fragments.TabTrackFragment;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -21,11 +21,11 @@ public class TabViewPagerAdapter extends FragmentStateAdapter {
     @Override
     public Fragment createFragment(int position) {
         if (position == 0)
-            return TrackTabFragment.newInstance();
+            return TabTrackFragment.newInstance();
         else if (position == 1)
-            return AlbumTabFragment.newInstance();
+            return TabAlbumFragment.newInstance();
         else
-            return PlayListTabFragment.newInstance();
+            return TabPlayListFragment.newInstance();
     }
 
     @Override

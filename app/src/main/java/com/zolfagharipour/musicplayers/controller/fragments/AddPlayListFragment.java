@@ -1,18 +1,17 @@
 package com.zolfagharipour.musicplayers.controller.fragments;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
 import com.zolfagharipour.musicplayers.R;
-import com.zolfagharipour.musicplayers.adapter.PlayListScreenRecyclerViewAdapter;
+import com.zolfagharipour.musicplayers.adapter.AddPlayListAdapter;
 import com.zolfagharipour.musicplayers.controller.activity.MusicPlayersActivity;
 import com.zolfagharipour.musicplayers.model.PlayList;
 import com.zolfagharipour.musicplayers.model.Song;
-import com.zolfagharipour.musicplayers.repository.MusicRepository;
+import com.zolfagharipour.musicplayers.repository.SongRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,19 +24,18 @@ import androidx.recyclerview.widget.RecyclerView;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
 
-public class PlayListScreenFragment extends Fragment implements PlayListScreenRecyclerViewAdapter.OnPlayListScreenListener {
+public class AddPlayListFragment extends Fragment implements AddPlayListAdapter.AddPlayListListener {
 
-    public static final String TAG = "tag";
     private RecyclerView mRecyclerView;
-    private PlayListScreenRecyclerViewAdapter mAdapter;
+    private AddPlayListAdapter mAdapter;
     private Toolbar mToolbar;
-    private MusicRepository mRepository;
+    private SongRepository mRepository;
 
-    public static PlayListScreenFragment newInstance() {
+    public static AddPlayListFragment newInstance() {
 
         Bundle args = new Bundle();
 
-        PlayListScreenFragment fragment = new PlayListScreenFragment();
+        AddPlayListFragment fragment = new AddPlayListFragment();
         fragment.setArguments(args);
         return fragment;
     }
@@ -46,12 +44,12 @@ public class PlayListScreenFragment extends Fragment implements PlayListScreenRe
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mRepository = MusicRepository.getInstance();
+        mRepository = SongRepository.getInstance();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_play_list_screen, container, false);
+        View view = inflater.inflate(R.layout.fragment_play_list_add, container, false);
 
         findViews(view);
         setToolbar();
@@ -60,8 +58,8 @@ public class PlayListScreenFragment extends Fragment implements PlayListScreenRe
     }
 
     private void findViews(View view) {
-        mToolbar = view.findViewById(R.id.playListScreenToolbar);
-        mRecyclerView = view.findViewById(R.id.playListScreenRecyclerView);
+        mToolbar = view.findViewById(R.id.addPlayListToolbar);
+        mRecyclerView = view.findViewById(R.id.addPlayListRecyclerView);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
     }
 
@@ -80,7 +78,7 @@ public class PlayListScreenFragment extends Fragment implements PlayListScreenRe
 
     private void setAdapter() {
         if (mAdapter == null) {
-            mAdapter = new PlayListScreenRecyclerViewAdapter(getActivity(), mRepository.getPlayLists(), this);
+            mAdapter = new AddPlayListAdapter(getActivity(), mRepository.getPlayLists(), this);
             mRecyclerView.setAdapter(mAdapter);
         } else {
             mAdapter.setPlayLists(mRepository.getPlayLists());
@@ -96,8 +94,8 @@ public class PlayListScreenFragment extends Fragment implements PlayListScreenRe
             editText.setSingleLine();
             editText.setHint(R.string.playlist_name);
 
-            SweetAlertDialog sweetAlertDialognew = new SweetAlertDialog(Objects.requireNonNull(getActivity()));
-            sweetAlertDialognew
+            SweetAlertDialog sweetAlertDialogue = new SweetAlertDialog(Objects.requireNonNull(getActivity()));
+            sweetAlertDialogue
                     .setTitleText(getString(R.string.create_playlist))
                     .setCustomView(editText)
                     .setCancelButton(android.R.string.cancel, null)
@@ -113,13 +111,13 @@ public class PlayListScreenFragment extends Fragment implements PlayListScreenRe
                                     return;
                                 }
                             }
-                                    List<Song> list = new ArrayList<>();
-                                    list.add(mRepository.getCurrentSong());
-                                    mRepository.getPlayLists().add(new PlayList(editText.getText().toString(), list));
-                                    sweetAlertDialog.dismissWithAnimation();
-                                    if (getActivity() != null) {
-                                        getActivity().onBackPressed();
-                                    }
+                            List<Song> list = new ArrayList<>();
+                            list.add(mRepository.getCurrentSong());
+                            mRepository.getPlayLists().add(new PlayList(editText.getText().toString(), list));
+                            sweetAlertDialog.dismissWithAnimation();
+                            if (getActivity() != null) {
+                                getActivity().onBackPressed();
+                            }
 
                         }
                     })

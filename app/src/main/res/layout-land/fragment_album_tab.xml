@@ -19,7 +19,7 @@
 
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/albumTabCollectionRecyclerView"
+                android:id="@+id/collectionTabCollectionRecyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/default_margin"/>
@@ -32,7 +32,7 @@
 
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/albumTabSongListRecyclerView"
+        android:id="@+id/collectionTabSongListRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"

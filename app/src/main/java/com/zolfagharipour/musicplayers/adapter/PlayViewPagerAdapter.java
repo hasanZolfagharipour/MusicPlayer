@@ -1,6 +1,6 @@
 package com.zolfagharipour.musicplayers.adapter;
 
-import com.zolfagharipour.musicplayers.controller.fragments.MusicCoverFragment;
+import com.zolfagharipour.musicplayers.controller.fragments.SongCoverFragment;
 import com.zolfagharipour.musicplayers.model.Song;
 
 import java.util.List;
@@ -22,15 +22,11 @@ public class PlayViewPagerAdapter extends FragmentStateAdapter {
     @NonNull
     @Override
     public Fragment createFragment(int position) {
-        return MusicCoverFragment.newInstance(mSongList.get(position));
+        return SongCoverFragment.newInstance(mSongList.get(position));
     }
 
     @Override
     public int getItemCount() {
         return mSongList.size();
-    }
-
-    public void setSongList(List<Song> songList) {
-        mSongList = songList;
     }
 }

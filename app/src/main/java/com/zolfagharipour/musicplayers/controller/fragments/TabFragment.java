@@ -1,22 +1,25 @@
 package com.zolfagharipour.musicplayers.controller.fragments;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.zolfagharipour.musicplayers.R;
 import com.zolfagharipour.musicplayers.adapter.TabViewPagerAdapter;
 import com.zolfagharipour.musicplayers.controller.activity.MusicPlayersActivity;
-import com.zolfagharipour.musicplayers.repository.MusicRepository;
-import com.zolfagharipour.musicplayers.utils.MusicManager;
+import com.zolfagharipour.musicplayers.repository.SongRepository;
+import com.zolfagharipour.musicplayers.utils.MusicUtils;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
@@ -26,13 +29,11 @@ import androidx.viewpager2.widget.ViewPager2;
 
 public class TabFragment extends Fragment {
 
-    public static final String TAG = "tag";
-    private MusicRepository mRepository;
+    private SongRepository mRepository;
     private Toolbar mToolbar;
     private ViewPager2 mViewPager;
-    private TabViewPagerAdapter mPagerAdapter;
     private TabLayout mTabLayout;
-    private OnMusicMenuItemSelectedListener mSelectedListener;
+    private MusicMenuListener mSelectedListener;
 
     public static TabFragment newInstance() {
 
@@ -46,9 +47,15 @@ public class TabFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mRepository = MusicRepository.getInstance();
-        mRepository.setSongList(MusicManager.getSongList(getActivity().getApplicationContext()));
+        mRepository = SongRepository.getInstance();
+        mRepository.setSongList(MusicUtils.getSongList(getActivity().getApplicationContext()));
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Window window = getActivity().getWindow();
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.setStatusBarColor(getResources().getColor(R.color.colorDefaultTabGray));
+            window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+        }
     }
 
     @Override
@@ -66,14 +73,14 @@ public class TabFragment extends Fragment {
 
 
     private void findViews(View view) {
-        mToolbar = view.findViewById(R.id.listMenuToolbar);
-        mViewPager = view.findViewById(R.id.viewPagerTabs);
-        mTabLayout = view.findViewById(R.id.tabLayout);
+        mToolbar = view.findViewById(R.id.tabFragmentToolbar);
+        mViewPager = view.findViewById(R.id.tabFragmentViewPager);
+        mTabLayout = view.findViewById(R.id.tabFragmentTabLayout);
     }
 
     private void setToolbar() {
         setHasOptionsMenu(true);
-        ((MusicPlayersActivity)getActivity()).setSupportActionBar(mToolbar);
+        ((MusicPlayersActivity) getActivity()).setSupportActionBar(mToolbar);
     }
 
     private void setTabLayout() {
@@ -96,20 +103,15 @@ public class TabFragment extends Fragment {
     }
 
     private void setViewPager() {
-        mPagerAdapter = new TabViewPagerAdapter(getActivity());
-        mViewPager.setAdapter(mPagerAdapter);
+        mViewPager.setAdapter(new TabViewPagerAdapter(getActivity()));
     }
 
-    private void setListener(){
+    private void setListener() {
         mViewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
             public void onPageSelected(int position) {
                 super.onPageSelected(position);
-
-                for (int i = 0; i < getActivity().getSupportFragmentManager().getFragments().size(); i++) {
-                    if (getActivity().getSupportFragmentManager().getFragments().get(i) instanceof PlayListTabFragment)
-                        ((PlayListTabFragment)getActivity().getSupportFragmentManager().getFragments().get(i)).setAdapter();
-                }
+                mSelectedListener.onUpdatePlayListsSong();
             }
         });
     }
@@ -121,12 +123,10 @@ public class TabFragment extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.tabMenuRefresh:
-                mRepository.setSongList(MusicManager.getSongList(getActivity().getApplicationContext()));
-                Log.d(TAG, "MusicManager.getSongList(getActivity()).size(): " + MusicManager.getSongList(getActivity().getApplicationContext()).size());
-                Log.d(TAG, "mRepository.getSongList().size(): " + mRepository.getSongList().size());
-                mSelectedListener.onRefreshMusicList();
+                mRepository.setSongList(MusicUtils.getSongList(getActivity()));
+                mSelectedListener.onRefreshSongList();
                 return true;
             case R.id.tabMenuExitApp:
                 getActivity().finish();
@@ -137,15 +137,17 @@ public class TabFragment extends Fragment {
 
     }
 
-    public interface OnMusicMenuItemSelectedListener {
-        void onRefreshMusicList();
-    }
-
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        if (context instanceof OnMusicMenuItemSelectedListener)
-            mSelectedListener = (OnMusicMenuItemSelectedListener) context;
+        if (context instanceof MusicMenuListener)
+            mSelectedListener = (MusicMenuListener) context;
 
+    }
+
+    public interface MusicMenuListener {
+        void onRefreshSongList();
+
+        void onUpdatePlayListsSong();
     }
 }

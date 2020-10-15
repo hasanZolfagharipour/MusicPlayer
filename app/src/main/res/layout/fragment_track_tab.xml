@@ -3,5 +3,5 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/recyclerview"
-    tools:context=".controller.fragments.TrackTabFragment"/>
+    android:id="@+id/trackTabRecyclerview"
+    tools:context=".controller.fragments.TabTrackFragment"/>

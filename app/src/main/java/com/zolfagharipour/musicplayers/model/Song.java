@@ -1,10 +1,13 @@
 package com.zolfagharipour.musicplayers.model;
 
+import com.zolfagharipour.musicplayers.utils.MusicUtils;
+
 import java.io.Serializable;
 
 public class Song implements Serializable {
 
     private String mPath, mTitle, mAlbum, mArtist, mDuration;
+    private byte[] mImage;
     private boolean favorite;
 
 
@@ -17,7 +20,7 @@ public class Song implements Serializable {
         mAlbum = album;
         mArtist = artist;
         mDuration = duration;
-
+        mImage = MusicUtils.getCoverArt(path);
     }
 
     public String getPath() {
@@ -66,5 +69,9 @@ public class Song implements Serializable {
 
     public void setFavorite(boolean favorite) {
         this.favorite = favorite;
+    }
+
+    public byte[] getImage() {
+        return mImage;
     }
 }
