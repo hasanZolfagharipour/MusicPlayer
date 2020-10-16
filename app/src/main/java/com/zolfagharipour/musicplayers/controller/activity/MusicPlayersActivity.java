@@ -35,6 +35,7 @@ public class MusicPlayersActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_music_players);
 
         checkPermissions();
+
     }
 
 

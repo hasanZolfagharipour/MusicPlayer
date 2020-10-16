@@ -33,6 +33,7 @@
         app:tabMaxWidth="0dp" />
 
     <com.google.android.material.card.MaterialCardView
+        android:id="@+id/materialCardView"
         style="@style/CustomCardViewStyle"
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -47,6 +48,16 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
+
     </com.google.android.material.card.MaterialCardView>
+
+    <include
+        layout="@layout/fragment_tab_popup_control_music"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_width="0dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

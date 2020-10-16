@@ -58,7 +58,7 @@ public class TracksAdapter extends RecyclerView.Adapter<TracksAdapter.TrackViewH
                 .asBitmap()
                 .load(song.getImage())
                 .placeholder(R.drawable.ic_cover_list)
-                .apply(RequestOptions.bitmapTransform(new RoundedCorners(14)))
+                .apply(RequestOptions.bitmapTransform(new RoundedCorners(24)))
                 .into(holder.mImageViewCover);
     }
 

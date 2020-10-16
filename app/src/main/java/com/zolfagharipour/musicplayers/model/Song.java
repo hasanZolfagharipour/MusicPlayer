@@ -74,4 +74,8 @@ public class Song implements Serializable {
     public byte[] getImage() {
         return mImage;
     }
+
+    public void setImage(byte[] image) {
+        mImage = image;
+    }
 }

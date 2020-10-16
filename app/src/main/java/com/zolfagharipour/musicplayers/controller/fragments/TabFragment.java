@@ -12,6 +12,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
@@ -66,7 +68,6 @@ public class TabFragment extends Fragment {
         return view;
     }
 
-
     private void setStatusBarColor(){
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Window window = getActivity().getWindow();
@@ -80,6 +81,7 @@ public class TabFragment extends Fragment {
         mToolbar = view.findViewById(R.id.tabFragmentToolbar);
         mViewPager = view.findViewById(R.id.tabFragmentViewPager);
         mTabLayout = view.findViewById(R.id.tabFragmentTabLayout);
+
     }
 
     private void setToolbar() {

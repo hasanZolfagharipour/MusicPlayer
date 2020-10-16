@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="?attr/actionBarSize"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_margin="8dp"
+    app:cardCornerRadius="32dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/border_popup_control"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp">
+
+       <ImageView
+           android:id="@+id/fragmentTabPopupImageViewCover"
+           android:layout_width="48dp"
+           android:layout_height="48dp"
+           app:layout_constraintBottom_toBottomOf="parent"
+           app:layout_constraintTop_toTopOf="parent"
+           app:layout_constraintStart_toStartOf="parent"
+           android:src="@drawable/ic_cover_list"/>
+
+        <TextView
+            android:id="@+id/fragmentTabPopupImageViewTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="marquee"
+            app:layout_constraintStart_toEndOf="@id/fragmentTabPopupImageViewCover"
+            android:layout_marginStart="16dp"
+            app:layout_constraintBottom_toBottomOf="@id/fragmentTabPopupImageViewForward"
+            app:layout_constraintTop_toTopOf="@id/fragmentTabPopupImageViewForward"/>
+
+
+        <ImageView
+            android:id="@+id/fragmentTabPopupImageViewBackward"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            app:layout_constraintEnd_toStartOf="@id/fragmentTabPopupImageViewPlay"
+            app:layout_constraintBottom_toBottomOf="@id/fragmentTabPopupImageViewForward"
+            app:layout_constraintTop_toTopOf="@id/fragmentTabPopupImageViewForward"
+            android:src="@drawable/ic_backward"
+            app:tint="@color/colorBlack" />
+
+        <ImageView
+            android:id="@+id/fragmentTabPopupImageViewPlay"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            app:tint="@color/colorBlack"
+            app:layout_constraintEnd_toStartOf="@id/fragmentTabPopupImageViewForward"
+            app:layout_constraintBottom_toBottomOf="@id/fragmentTabPopupImageViewForward"
+            app:layout_constraintTop_toTopOf="@id/fragmentTabPopupImageViewForward"
+            android:src="@drawable/ic_play"/>
+
+
+        <ImageView
+            android:id="@+id/fragmentTabPopupImageViewForward"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:src="@drawable/ic_forward"
+            app:tint="@color/colorBlack"/>
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>
