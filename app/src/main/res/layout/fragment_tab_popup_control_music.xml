@@ -23,23 +23,28 @@
            android:src="@drawable/ic_cover_list"/>
 
         <TextView
-            android:id="@+id/fragmentTabPopupImageViewTitle"
-            android:layout_width="wrap_content"
+            android:id="@+id/fragmentTabPopupTextViewTitle"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:ellipsize="marquee"
+            android:textSize="16sp"
+            android:singleLine="true"
+            android:textColor="@color/colorBlack"
+            android:gravity="start"
             app:layout_constraintStart_toEndOf="@id/fragmentTabPopupImageViewCover"
+            app:layout_constraintEnd_toStartOf="@id/fragmentTabPopupImageViewPrevious"
             android:layout_marginStart="16dp"
-            app:layout_constraintBottom_toBottomOf="@id/fragmentTabPopupImageViewForward"
-            app:layout_constraintTop_toTopOf="@id/fragmentTabPopupImageViewForward"/>
+            app:layout_constraintBottom_toBottomOf="@id/fragmentTabPopupImageViewNext"
+            app:layout_constraintTop_toTopOf="@id/fragmentTabPopupImageViewNext"/>
 
 
         <ImageView
-            android:id="@+id/fragmentTabPopupImageViewBackward"
+            android:id="@+id/fragmentTabPopupImageViewPrevious"
             android:layout_width="32dp"
             android:layout_height="32dp"
             app:layout_constraintEnd_toStartOf="@id/fragmentTabPopupImageViewPlay"
-            app:layout_constraintBottom_toBottomOf="@id/fragmentTabPopupImageViewForward"
-            app:layout_constraintTop_toTopOf="@id/fragmentTabPopupImageViewForward"
+            app:layout_constraintBottom_toBottomOf="@id/fragmentTabPopupImageViewNext"
+            app:layout_constraintTop_toTopOf="@id/fragmentTabPopupImageViewNext"
             android:src="@drawable/ic_backward"
             app:tint="@color/colorBlack" />
 
@@ -48,14 +53,14 @@
             android:layout_width="32dp"
             android:layout_height="32dp"
             app:tint="@color/colorBlack"
-            app:layout_constraintEnd_toStartOf="@id/fragmentTabPopupImageViewForward"
-            app:layout_constraintBottom_toBottomOf="@id/fragmentTabPopupImageViewForward"
-            app:layout_constraintTop_toTopOf="@id/fragmentTabPopupImageViewForward"
+            app:layout_constraintEnd_toStartOf="@id/fragmentTabPopupImageViewNext"
+            app:layout_constraintBottom_toBottomOf="@id/fragmentTabPopupImageViewNext"
+            app:layout_constraintTop_toTopOf="@id/fragmentTabPopupImageViewNext"
             android:src="@drawable/ic_play"/>
 
 
         <ImageView
-            android:id="@+id/fragmentTabPopupImageViewForward"
+            android:id="@+id/fragmentTabPopupImageViewNext"
             android:layout_width="32dp"
             android:layout_height="32dp"
             app:layout_constraintEnd_toEndOf="parent"

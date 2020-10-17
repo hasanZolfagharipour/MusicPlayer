@@ -16,6 +16,8 @@ public class SongRepository {
     private static SongRepository sRepository;
     private List<Song> mSongList;
     private Song mCurrentSong;
+    private Song mCurrentPlayingSong;
+    private int mCurrentSongPositionInItsList;
     private List<Song> mCurrentSongList;
 
     private List<PlayList> mPlayLists;
@@ -100,5 +102,21 @@ public class SongRepository {
                 break;
             }
         }
+    }
+
+    public Song getCurrentPlayingSong() {
+        return mCurrentPlayingSong;
+    }
+
+    public void setCurrentPlayingSong(Song currentPlayingSong) {
+        mCurrentPlayingSong = currentPlayingSong;
+    }
+
+    public void setCurrentSongPositionInItsList(int currentPosition) {
+        mCurrentSongPositionInItsList = currentPosition;
+    }
+
+    public int getCurrentSongPositionInItsList() {
+        return mCurrentSongPositionInItsList;
     }
 }

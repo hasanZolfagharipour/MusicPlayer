@@ -76,7 +76,7 @@ public class TabTrackFragment extends Fragment implements TracksAdapter.TrackIte
     @Override
     public void onTrackItemClicked(Song song) {
         mRepository.setCurrentSong(song);
-        mRepository.setCurrentSongList(mRepository.getSongList(), "TrackTab");
+        mRepository.setCurrentSongList(mRepository.getSongList(), getString(R.string.song_list_title_tab_track));
         getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.activityFragmentContainer, PlayFragment.newInstance()).addToBackStack(null).commit();
     }
 }

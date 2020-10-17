@@ -2,12 +2,19 @@ package com.zolfagharipour.musicplayers.utils;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.drawable.AnimatedVectorDrawable;
+import android.graphics.drawable.Drawable;
 import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.widget.ImageView;
+
 import com.zolfagharipour.musicplayers.model.Song;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
+
+import androidx.vectordrawable.graphics.drawable.AnimatedVectorDrawableCompat;
 
 public class MusicUtils {
 
@@ -56,4 +63,27 @@ public class MusicUtils {
             return totalOld;
     }
 
+    public static int getRandomNumberForShuffle(int currentPosition, int limitation) {
+        int number = new Random().nextInt();
+        if (number == currentPosition)
+            getRandomNumberForShuffle(currentPosition ,limitation);
+        return number;
+    }
+
+    public static  void setDrawableAnimation(Context context, ImageView imageView, int resId) {
+
+        AnimatedVectorDrawableCompat animatedVectorDrawableCompat;
+        AnimatedVectorDrawable       animatedVectorDrawable;
+
+        imageView.setImageDrawable(context.getResources().getDrawable(resId));
+        Drawable drawable = imageView.getDrawable();
+
+        if (drawable instanceof AnimatedVectorDrawableCompat) {
+            animatedVectorDrawableCompat = (AnimatedVectorDrawableCompat) drawable;
+            animatedVectorDrawableCompat.start();
+        } else if (drawable instanceof AnimatedVectorDrawable) {
+            animatedVectorDrawable = (AnimatedVectorDrawable) drawable;
+            animatedVectorDrawable.start();
+        }
+    }
 }

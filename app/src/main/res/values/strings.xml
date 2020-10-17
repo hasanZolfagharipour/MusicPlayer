@@ -23,6 +23,7 @@
     <string name="playlist_name">Playlist name...</string>
     <string name="already_exist">\ already existed.\</string>
     <string name="successfully_added">\"Successfully added to \"</string>
+    <string name="song_list_title_tab_track">TrackTab</string>
 
 
 </resources>

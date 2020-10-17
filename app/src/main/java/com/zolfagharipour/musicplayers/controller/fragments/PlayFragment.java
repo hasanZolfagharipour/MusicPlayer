@@ -1,13 +1,9 @@
 package com.zolfagharipour.musicplayers.controller.fragments;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.graphics.Point;
-import android.graphics.drawable.AnimatedVectorDrawable;
-import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -49,20 +45,18 @@ import androidx.transition.ChangeBounds;
 import androidx.transition.ChangeImageTransform;
 import androidx.transition.TransitionManager;
 import androidx.transition.TransitionSet;
-import androidx.vectordrawable.graphics.drawable.AnimatedVectorDrawableCompat;
 import androidx.viewpager2.widget.ViewPager2;
 
 public class PlayFragment extends Fragment implements MediaPlayer.OnCompletionListener {
 
 
+    public static final String TAG = "tag";
     private TextView mTextViewSongTitle, mTextViewSongAlbum, mTextViewElapsedTime, mTextViewTotalTime;
-    private ImageView mImageViewFavorite,mImageViewShuffle, mImageViewBackward, mImageViewPlayPause, mImageViewForward, mImageViewRepeat, mImageViewAddToPlayList;
+    private ImageView mImageViewFavorite, mImageViewShuffle, mImageViewBackward, mImageViewPlayPause, mImageViewForward, mImageViewRepeat, mImageViewAddToPlayList;
     private SwitchIconView mIconViewShuffle;
     private LinearLayout mLinearLayoutViewPagerContainer;
     private SeekBar mSeekBar;
     private ConstraintLayout mConstraintLayoutRoot;
-    private AnimatedVectorDrawableCompat mAnimatedVectorDrawableCompat;
-    private AnimatedVectorDrawable mAnimatedVectorDrawable;
 
     private ViewPager2 mViewPager2;
     private PlayViewPagerAdapter mViewPagerAdapter;
@@ -141,7 +135,7 @@ public class PlayFragment extends Fragment implements MediaPlayer.OnCompletionLi
         mImageViewAddToPlayList = view.findViewById(R.id.playFragmentImageViewAddToPlayList);
     }
 
-    private void setStatusBarColor(){
+    private void setStatusBarColor() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Window window = getActivity().getWindow();
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
@@ -179,10 +173,11 @@ public class PlayFragment extends Fragment implements MediaPlayer.OnCompletionLi
             mHandler = new Handler();
         } else {
 
-            if (mRepository.getMediaPlayer() != null  && mRepository.getMediaPlayer().isPlaying()){
+            if (mRepository.getMediaPlayer() != null &&
+                    mRepository.getCurrentPlayingSong().getPath().equals(mRepository.getCurrentSong().getPath())) {
                 mMediaPlayer = mRepository.getMediaPlayer();
                 mHandler = new Handler();
-            }else {
+            } else {
                 setMediaPlayer();
                 mMediaPlayer.start();
             }
@@ -255,12 +250,12 @@ public class PlayFragment extends Fragment implements MediaPlayer.OnCompletionLi
                 if (mMediaPlayer != null && !mMediaPlayer.isPlaying()) {
                     mMediaPlayer.start();
                     mHandler.removeCallbacks(mRunnable);
-                    setDrawableAnimation(mImageViewPlayPause, R.drawable.avd_play_to_pause);
+                    MusicUtils.setDrawableAnimation(getActivity(), mImageViewPlayPause, R.drawable.avd_play_to_pause);
                     setLinearLayoutTransition(true);
                 } else if (mMediaPlayer != null && mMediaPlayer.isPlaying()) {
                     mMediaPlayer.pause();
                     setSeekBar();
-                    setDrawableAnimation(mImageViewPlayPause, R.drawable.avd_pause_to_play);
+                    MusicUtils.setDrawableAnimation(getActivity(), mImageViewPlayPause, R.drawable.avd_pause_to_play);
                     setLinearLayoutTransition(false);
                 }
             }
@@ -297,10 +292,10 @@ public class PlayFragment extends Fragment implements MediaPlayer.OnCompletionLi
                 } else if (mRepository.getPlayRepeatMode() == PlayRepeatMode.REPEAT_OFF) {
                     mImageViewRepeat.setAlpha(1f);
                     mRepository.setPlayRepeatMode(PlayRepeatMode.REPEAT_ONE);
-                    setDrawableAnimation(mImageViewRepeat, R.drawable.avd_repeat_to_one);
+                    MusicUtils.setDrawableAnimation(getActivity(), mImageViewRepeat, R.drawable.avd_repeat_to_one);
                 } else if (mRepository.getPlayRepeatMode() == PlayRepeatMode.REPEAT_ONE) {
                     mRepository.setPlayRepeatMode(PlayRepeatMode.REPEAT_ALL);
-                    setDrawableAnimation(mImageViewRepeat, R.drawable.avd_one_to_repeat);
+                    MusicUtils.setDrawableAnimation(getActivity(), mImageViewRepeat, R.drawable.avd_one_to_repeat);
                 }
             }
         });
@@ -330,11 +325,11 @@ public class PlayFragment extends Fragment implements MediaPlayer.OnCompletionLi
                             break;
                         }
                     }
-                    setDrawableAnimation(mImageViewFavorite, R.drawable.avd_to_un_favorite);
+                    MusicUtils.setDrawableAnimation(getActivity(), mImageViewFavorite, R.drawable.avd_to_un_favorite);
                 } else {
                     mSong.setFavorite(true);
                     mRepository.getPlayLists().get(0).getSongList().add(mSong);
-                    setDrawableAnimation(mImageViewFavorite, R.drawable.avd_to_favorite);
+                    MusicUtils.setDrawableAnimation(getActivity(), mImageViewFavorite, R.drawable.avd_to_favorite);
                 }
                 mRepository.updateFavorite(mSong);
             }
@@ -349,13 +344,6 @@ public class PlayFragment extends Fragment implements MediaPlayer.OnCompletionLi
         });
     }
 
-    private int getRandomNumberForShuffle() {
-        int number = new Random().nextInt(mSongList.size());
-        if (number == mViewPager2.getCurrentItem())
-            getRandomNumberForShuffle();
-        return number;
-    }
-
     private void prepareNextMusicItem() {
         int currentPage = mViewPager2.getCurrentItem();
 
@@ -366,15 +354,12 @@ public class PlayFragment extends Fragment implements MediaPlayer.OnCompletionLi
                 currentPage = 0;
                 mViewPager2.setCurrentItem(currentPage);
             }
-        }
-        else if (mRepository.isShuffleOn() && mRepository.getPlayRepeatMode() == PlayRepeatMode.REPEAT_ALL) {
-            currentPage = getRandomNumberForShuffle();
+        } else if (mRepository.isShuffleOn() && mRepository.getPlayRepeatMode() == PlayRepeatMode.REPEAT_ALL) {
+            currentPage = MusicUtils.getRandomNumberForShuffle(mViewPager2.getCurrentItem(), mSongList.size());
             mViewPager2.setCurrentItem(currentPage);
-        }
-        else if (mRepository.getPlayRepeatMode() == PlayRepeatMode.REPEAT_ONE) {
+        } else if (mRepository.getPlayRepeatMode() == PlayRepeatMode.REPEAT_ONE) {
             mViewPager2.setCurrentItem(currentPage);
-        }
-        else if (mRepository.getPlayRepeatMode() == PlayRepeatMode.REPEAT_OFF) {
+        } else if (mRepository.getPlayRepeatMode() == PlayRepeatMode.REPEAT_OFF) {
             mHandler.removeCallbacks(mRunnable);
             mMediaPlayer.seekTo(0);
             setInitializationUI();
@@ -394,7 +379,7 @@ public class PlayFragment extends Fragment implements MediaPlayer.OnCompletionLi
         setSeekBar();
     }
 
-    private void setLinearLayoutTransition(boolean isExpand){
+    private void setLinearLayoutTransition(boolean isExpand) {
         TransitionManager.beginDelayedTransition(mLinearLayoutViewPagerContainer, new TransitionSet()
                 .addTransition(new ChangeBounds())
                 .addTransition(new ChangeImageTransform()));
@@ -406,19 +391,6 @@ public class PlayFragment extends Fragment implements MediaPlayer.OnCompletionLi
         int width = displayMetrics.widthPixels;
         params.height = isExpand ? Math.round(0.5f * width) : Math.round(0.3f * width);
         mViewPager2.setLayoutParams(params);
-    }
-
-    private void setDrawableAnimation(ImageView imageView, int resId) {
-        imageView.setImageDrawable(getResources().getDrawable(resId));
-        Drawable drawable = imageView.getDrawable();
-
-        if (drawable instanceof AnimatedVectorDrawableCompat) {
-            mAnimatedVectorDrawableCompat = (AnimatedVectorDrawableCompat) drawable;
-            mAnimatedVectorDrawableCompat.start();
-        } else if (drawable instanceof AnimatedVectorDrawable) {
-            mAnimatedVectorDrawable = (AnimatedVectorDrawable) drawable;
-            mAnimatedVectorDrawable.start();
-        }
     }
 
     private void setInitializationUI() {
@@ -434,8 +406,6 @@ public class PlayFragment extends Fragment implements MediaPlayer.OnCompletionLi
             mImageViewRepeat.setImageResource(R.drawable.ic_repeat);
             mImageViewRepeat.setAlpha(0.5f);
         }
-
-
 
 
         mMediaPlayer.setOnCompletionListener(this);
@@ -463,6 +433,8 @@ public class PlayFragment extends Fragment implements MediaPlayer.OnCompletionLi
             mMediaPlayer.stop();
         }
         mRepository.setMediaPlayer(getActivity(), mUri);
+        mRepository.setCurrentPlayingSong(mSong);
+        mRepository.setCurrentSongPositionInItsList(mViewPager2.getCurrentItem());
         mMediaPlayer = mRepository.getMediaPlayer();
     }
 
