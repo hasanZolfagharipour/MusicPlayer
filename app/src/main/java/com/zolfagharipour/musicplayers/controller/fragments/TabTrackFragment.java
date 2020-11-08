@@ -38,7 +38,6 @@ public class TabTrackFragment extends Fragment implements TracksAdapter.TrackIte
         super.onCreate(savedInstanceState);
         mRepository = SongRepository.getInstance();
         mSongList = mRepository.getSongList();
-
     }
 
     @Override
@@ -47,6 +46,8 @@ public class TabTrackFragment extends Fragment implements TracksAdapter.TrackIte
 
         findViews(view);
         setRecyclerView();
+
+
         setAdapter();
 
         return view;

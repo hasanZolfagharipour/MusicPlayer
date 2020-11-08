@@ -33,7 +33,6 @@ import com.zolfagharipour.musicplayers.utils.MusicUtils;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.Random;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -82,8 +81,6 @@ public class PlayFragment extends Fragment implements MediaPlayer.OnCompletionLi
         initialization();
         setReturnTransition(new Fade());
         setEnterTransition(new Explode());
-
-
     }
 
     @Override

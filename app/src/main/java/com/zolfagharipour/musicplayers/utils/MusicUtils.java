@@ -11,6 +11,7 @@ import android.widget.ImageView;
 
 import com.zolfagharipour.musicplayers.model.Song;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -63,11 +64,14 @@ public class MusicUtils {
             return totalOld;
     }
 
+    //todo all song should be played.
+
     public static int getRandomNumberForShuffle(int currentPosition, int limitation) {
-        int number = new Random().nextInt();
+        int number = new Random().nextInt(limitation);
         if (number == currentPosition)
             getRandomNumberForShuffle(currentPosition ,limitation);
         return number;
+        //Collections.shuffle();
     }
 
     public static  void setDrawableAnimation(Context context, ImageView imageView, int resId) {

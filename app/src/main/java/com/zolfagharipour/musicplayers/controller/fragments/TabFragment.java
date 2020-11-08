@@ -60,8 +60,6 @@ public class TabFragment extends Fragment {
         super.onCreate(savedInstanceState);
         mRepository = SongRepository.getInstance();
         mRepository.setSongList(MusicUtils.getSongList(getActivity().getApplicationContext()));
-
-
     }
 
     @Override

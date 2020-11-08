@@ -50,6 +50,7 @@ public class TracksAdapter extends RecyclerView.Adapter<TracksAdapter.TrackViewH
         holder.mTextViewTitle.setText(song.getTitle());
         holder.mTextViewSubtitle.setText(song.getAlbum());
         bindMusicCover(holder, song);
+        bindLottieAnimation(holder, song);
     }
 
     private void bindMusicCover(final TrackViewHolder holder, final Song song) {
