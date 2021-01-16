@@ -24,7 +24,8 @@ in this app horizontal recyclerView in Album tab has been implemeted so scrollin
  - Multiple theme
  - Multiple language
  - Migrate to mvvm
- 
+
+## Screenshots
 | ![01](https://user-images.githubusercontent.com/68108209/104815139-1047a900-5828-11eb-9217-fde03e0d31e1.jpg)| ![02](https://user-images.githubusercontent.com/68108209/104815144-150c5d00-5828-11eb-8444-589809b88ec0.jpg) | ![03](https://user-images.githubusercontent.com/68108209/104815148-19387a80-5828-11eb-9a60-98aa5d80020c.jpg) |
 |---|---|---|
 
