@@ -1,10 +1,12 @@
 package com.zolfagharipour.musicplayers.controller.fragments;
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -15,6 +17,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
@@ -31,6 +34,7 @@ import com.zolfagharipour.musicplayers.utils.MusicUtils;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
 
@@ -41,6 +45,7 @@ public class TabFragment extends Fragment {
     private Toolbar mToolbar;
     private ViewPager2 mViewPager;
     private TabLayout mTabLayout;
+    private CardView mCardView;
     private MusicMenuListener mSelectedListener;
 
     private ImageView mImageViewPopupLayoutCover, mImageViewPopupLayoutPrevious, mImageViewPopupLayoutPlayPause, mImageViewPopupLayoutNext;
@@ -95,6 +100,7 @@ public class TabFragment extends Fragment {
         mImageViewPopupLayoutPlayPause = view.findViewById(R.id.fragmentTabPopupImageViewPlay);
         mImageViewPopupLayoutNext = view.findViewById(R.id.fragmentTabPopupImageViewNext);
         mTextViewPopupLayoutTitle = view.findViewById(R.id.fragmentTabPopupTextViewTitle);
+        mCardView = view.findViewById(R.id.cardViewContainerControlLayout);
         mTextViewPopupLayoutTitle.setSelected(true);
 
         if (mRepository.getMediaPlayer() != null) {
@@ -180,6 +186,15 @@ public class TabFragment extends Fragment {
     }
 
     private void handleControlLayout() {
+
+        int currentOrientation = getResources().getConfiguration().orientation;
+        if (currentOrientation == Configuration.ORIENTATION_LANDSCAPE) {
+            mCardView.setVisibility(View.GONE);
+        }
+        else {
+           mCardView.setVisibility(View.VISIBLE);
+        }
+
         Song song;
         if (mRepository.getCurrentSong() == null) {
             if (mRepository.getSongList().size() == 0)
