@@ -1,5 +1,5 @@
 # MusicPlayer
-
+**`#Java` `#MVC`**
 
 A music player with playlist options like samsung music player with three tab: Tracks, Albums, Playlists. also it has different ui for playing screen in different orientations.
 in this app horizontal recyclerView in Album tab has been implemeted so scrolling tab correctly handled.
